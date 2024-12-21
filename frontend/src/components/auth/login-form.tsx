@@ -37,7 +37,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
           <form
             onSubmit={handleSubmit(handleLogin)}
             className="flex flex-col w-1/2 h-[20rem]">
-            <h2 className="text-2xl w-full text-center font-bold">EventEase</h2>
+            <h2 className="text-2xl w-full text-center font-bold">EventEazy</h2>
             <div className="flex flex-col justify-center gap-6 h-full">
               <div className="grid gap-2">
                 <Label
