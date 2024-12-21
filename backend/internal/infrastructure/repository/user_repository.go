@@ -8,7 +8,6 @@ import (
 type UserRepository interface {
 	FindBySecureID(secureID string) (*model.User, error)
 	FindByUsername(email string) (*model.User, error)
-	Create(user *model.User) (*model.User, error)
 }
 
 type userRepository struct {
@@ -39,12 +38,4 @@ func (r *userRepository) FindByUsername(username string) (*model.User, error) {
 	}
 
 	return &user, nil
-}
-
-func (r *userRepository) Create(user *model.User) (*model.User, error) {
-	if err := r.db.Create(user).Error; err != nil {
-		return nil, err
-	}
-
-	return r.FindBySecureID(user.SecureID)
 }
