@@ -2,9 +2,12 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/robert-wl/backend/docs"
 	"github.com/robert-wl/backend/internal/handler"
 	"github.com/robert-wl/backend/internal/infrastructure/repository"
 	"github.com/robert-wl/backend/internal/service"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
@@ -16,6 +19,8 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	authService := service.NewAuthService(userRepo)
 
 	authHandler := handler.NewAuthHandler(authService)
+
+	docs.SwaggerInfo.Title = "Embreo Backend API"
 
 	v1 := r.Group("/api/v1")
 	{
@@ -30,6 +35,8 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 			auth.POST("/login", authHandler.LogIn)
 		}
 	}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return r
 }
