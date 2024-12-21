@@ -22,6 +22,8 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 
 	docs.SwaggerInfo.Title = "Embreo Backend API"
 
+	//authMiddleware := middleware.AuthMiddleware(userRepo)
+
 	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/ping", func(ctx *gin.Context) {
