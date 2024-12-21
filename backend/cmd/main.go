@@ -2,15 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/robert-wl/backend/internal/infrastructure/db"
 	"github.com/robert-wl/backend/internal/router"
 )
 
 func main() {
-	fmt.Println("Hello, world!")
+	database := db.Get()
+	err := db.AutoMigrate(database)
+
+	if err != nil {
+		panic("failed to migrate db" + err.Error())
+	}
 
 	r := router.NewRouter()
 
-	err := r.Run(fmt.Sprintf(":%s", "8080"))
+	err = r.Run(fmt.Sprintf(":%s", "8080"))
 
 	if err != nil {
 		panic(err)
