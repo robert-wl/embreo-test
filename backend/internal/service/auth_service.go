@@ -9,6 +9,7 @@ import (
 )
 
 type AuthService interface {
+	LogIn(dto *dto.LogInRequest) (*string, error)
 }
 
 type authService struct {
