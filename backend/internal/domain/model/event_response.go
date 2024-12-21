@@ -3,8 +3,8 @@ package model
 import "time"
 
 type EventResponse struct {
-	ID        uint      `json:"id"`
-	SecureID  string    `json:"secure_id"`
+	ID        uint      `json:"-"`
+	SecureID  string    `json:"id"`
 	EventID   uint      `json:"event_id"`
 	VendorID  uint      `json:"vendor_id"`
 	Status    string    `json:"status" gorm:"not null;default:'pending';check:status IN ('pending', 'approved', 'rejected')"`

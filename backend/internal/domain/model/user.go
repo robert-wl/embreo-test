@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	ID        uint      `json:"-" gorm:"primary_key"`
-	SecureID  string    `json:"secure_id" gorm:"type:char(36);uniqueIndex;not null"`
+	SecureID  string    `json:"id" gorm:"type:char(36);uniqueIndex;not null"`
 	Username  string    `json:"username" gorm:"uniqueIndex;not null"`
 	Password  string    `json:"-" gorm:"not null"`
 	Role      string    `json:"role" gorm:"not null;default:'company';check:role IN ('company', 'vendor')"`
