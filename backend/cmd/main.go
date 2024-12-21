@@ -14,7 +14,14 @@ func main() {
 		panic("failed to migrate db" + err.Error())
 	}
 
-	r := router.NewRouter()
+	seeder := db.NewSeeder(database)
+	err = seeder.SeedUser()
+
+	if err != nil {
+		panic("failed to migrate db" + err.Error())
+	}
+
+	r := router.NewRouter(database)
 
 	err = r.Run(fmt.Sprintf(":%s", "8080"))
 
@@ -22,4 +29,5 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("Server is running on port 8080")
 }
