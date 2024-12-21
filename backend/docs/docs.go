@@ -118,10 +118,10 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
-                "name": {
+                "id": {
                     "type": "string"
                 },
-                "secure_id": {
+                "name": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -141,10 +141,10 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
-                "name": {
+                "id": {
                     "type": "string"
                 },
-                "secure_id": {
+                "name": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -161,10 +161,10 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
-                "role": {
+                "id": {
                     "type": "string"
                 },
-                "secure_id": {
+                "role": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -190,10 +190,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/model.EventType"
                     }
                 },
-                "name": {
+                "id": {
                     "type": "string"
                 },
-                "secure_id": {
+                "name": {
                     "type": "string"
                 },
                 "updated_at": {

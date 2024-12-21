@@ -19,9 +19,9 @@ definitions:
     properties:
       created_at:
         type: string
-      name:
+      id:
         type: string
-      secure_id:
+      name:
         type: string
       updated_at:
         type: string
@@ -34,9 +34,9 @@ definitions:
     properties:
       created_at:
         type: string
-      name:
+      id:
         type: string
-      secure_id:
+      name:
         type: string
       updated_at:
         type: string
@@ -47,9 +47,9 @@ definitions:
         $ref: '#/definitions/model.Company'
       created_at:
         type: string
-      role:
+      id:
         type: string
-      secure_id:
+      role:
         type: string
       updated_at:
         type: string
@@ -66,9 +66,9 @@ definitions:
         items:
           $ref: '#/definitions/model.EventType'
         type: array
-      name:
+      id:
         type: string
-      secure_id:
+      name:
         type: string
       updated_at:
         type: string
