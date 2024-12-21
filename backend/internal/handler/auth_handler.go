@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/robert-wl/backend/internal/domain/model"
 	"github.com/robert-wl/backend/internal/dto"
 	"github.com/robert-wl/backend/internal/service"
 	"github.com/robert-wl/backend/pkg/utils"
@@ -45,4 +46,19 @@ func (h *AuthHandler) LogIn(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, dto.LogInResponse{
 		AccessToken: *token,
 	})
+}
+
+// Me @Summary Get current user
+// @Description Get the current user
+// @Tags authentication
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} model.User
+// @Failure 400 {object} utils.ErrorResponse
+// @Router /auth/me [get]
+func (h *AuthHandler) Me(ctx *gin.Context) {
+	user := ctx.MustGet("user").(*model.User)
+
+	ctx.JSON(http.StatusOK, user)
 }

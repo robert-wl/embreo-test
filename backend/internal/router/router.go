@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/robert-wl/backend/docs"
 	"github.com/robert-wl/backend/internal/handler"
+	"github.com/robert-wl/backend/internal/handler/middleware"
 	"github.com/robert-wl/backend/internal/infrastructure/repository"
 	"github.com/robert-wl/backend/internal/service"
 	swaggerFiles "github.com/swaggo/files"
@@ -22,7 +23,7 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 
 	docs.SwaggerInfo.Title = "Embreo Backend API"
 
-	//authMiddleware := middleware.AuthMiddleware(userRepo)
+	authMiddleware := middleware.AuthMiddleware(userRepo)
 
 	v1 := r.Group("/api/v1")
 	{
@@ -35,6 +36,8 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/login", authHandler.LogIn)
+
+			auth.GET("/me", authMiddleware, authHandler.Me)
 		}
 	}
 

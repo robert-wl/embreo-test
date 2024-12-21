@@ -15,6 +15,68 @@ definitions:
       access_token:
         type: string
     type: object
+  model.Company:
+    properties:
+      created_at:
+        type: string
+      name:
+        type: string
+      secure_id:
+        type: string
+      updated_at:
+        type: string
+      users:
+        items:
+          $ref: '#/definitions/model.User'
+        type: array
+    type: object
+  model.EventType:
+    properties:
+      created_at:
+        type: string
+      name:
+        type: string
+      secure_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.User:
+    properties:
+      company:
+        $ref: '#/definitions/model.Company'
+      created_at:
+        type: string
+      role:
+        type: string
+      secure_id:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+      vendor:
+        $ref: '#/definitions/model.Vendor'
+    type: object
+  model.Vendor:
+    properties:
+      created_at:
+        type: string
+      event_types:
+        items:
+          $ref: '#/definitions/model.EventType'
+        type: array
+      name:
+        type: string
+      secure_id:
+        type: string
+      updated_at:
+        type: string
+      users:
+        items:
+          $ref: '#/definitions/model.User'
+        type: array
+    type: object
   utils.ErrorResponse:
     properties:
       error:
@@ -57,6 +119,26 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/utils.ErrorResponse'
+      tags:
+      - authentication
+  /auth/me:
+    get:
+      consumes:
+      - application/json
+      description: Get the current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - BearerAuth: []
       tags:
       - authentication
 securityDefinitions:
