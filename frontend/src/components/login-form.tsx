@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ComponentPropsWithoutRef } from "react";
@@ -11,30 +11,32 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
       className={cn("flex flex-col gap-6", className)}
       {...props}>
       <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your email below to login to your account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
+        <CardContent className="flex w-full p-8">
+          <div className="flex items-center gap-8 w-1/2">
+            <img
+              className="object-cover w-fit h-fit"
+              src="./images/login/image-1.png"
+            />
+          </div>
+          <form className="flex flex-col w-1/2 h-[20rem]">
+            <h2 className="text-2xl w-full text-center font-bold">EventEase</h2>
+            <div className="flex flex-col justify-center gap-6 h-full">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label
+                  className="text-start"
+                  htmlFor="email">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="account@gmail.com"
                   required
                 />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
-                    Forgot your password?
-                  </a>
                 </div>
                 <Input
                   id="password"
@@ -47,19 +49,6 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
                 className="w-full">
                 Login
               </Button>
-              <Button
-                variant="outline"
-                className="w-full">
-                Login with Google
-              </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <a
-                href="#"
-                className="underline underline-offset-4">
-                Sign up
-              </a>
             </div>
           </form>
         </CardContent>

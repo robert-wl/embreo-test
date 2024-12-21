@@ -1,9 +1,9 @@
 import { RouteObject } from "react-router";
-import Page from "@/app/login/page.tsx";
+import LoginPage from "@/app/login/login-page.tsx";
 
 export const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Page />,
+    element: <LoginPage />,
   },
 ];
