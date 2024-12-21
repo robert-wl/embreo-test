@@ -4,8 +4,24 @@ import { Card, CardContent } from "@/components/ui/card.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { ComponentPropsWithoutRef } from "react";
+import useAuth from "@/hooks/use-auth.ts";
+import { useForm } from "react-hook-form";
+import { LoginDTO, loginSchema } from "@/lib/model/schema/auth/login.dto.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router";
 
 export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div">) {
+  const { login } = useAuth();
+  const { register, handleSubmit } = useForm<LoginDTO>({
+    resolver: zodResolver(loginSchema),
+  });
+  const navigate = useNavigate();
+
+  const handleLogin = async (data: LoginDTO) => {
+    await login(data);
+    navigate("/home");
+  };
+
   return (
     <div
       className={cn("flex flex-col gap-6", className)}
@@ -18,7 +34,9 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
               src="./images/login/image-1.png"
             />
           </div>
-          <form className="flex flex-col w-1/2 h-[20rem]">
+          <form
+            onSubmit={handleSubmit(handleLogin)}
+            className="flex flex-col w-1/2 h-[20rem]">
             <h2 className="text-2xl w-full text-center font-bold">EventEase</h2>
             <div className="flex flex-col justify-center gap-6 h-full">
               <div className="grid gap-2">
@@ -32,6 +50,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
                   type="username"
                   placeholder="username"
                   required
+                  {...register("username")}
                 />
               </div>
               <div className="grid gap-2">
@@ -43,6 +62,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
                   type="password"
                   placeholder="password"
                   required
+                  {...register("password")}
                 />
               </div>
               <Button

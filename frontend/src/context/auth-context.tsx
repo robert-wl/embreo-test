@@ -12,14 +12,14 @@ interface Props {
 
 interface AuthContextType {
   user: Maybe<UserEntity>;
-  login: (dto: LoginDTO) => void;
-  logout: () => void;
+  login: (dto: LoginDTO) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: () => {},
-  logout: () => {},
+  login: async () => {},
+  logout: async () => {},
 });
 
 export function AuthProvider({ children }: Props) {
@@ -28,9 +28,13 @@ export function AuthProvider({ children }: Props) {
   const { data } = getCurrentUser({
     enabled: !!token,
   });
-  const { mutate } = useLogin();
+  const { mutate } = useLogin({
+    onSuccess: (data) => {
+      setToken(data.access_token);
+    },
+  });
 
-  const logout = () => {
+  const logout = async () => {
     setToken(null);
     setUser(null);
   };
