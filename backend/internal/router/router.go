@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/robert-wl/backend/docs"
 	"github.com/robert-wl/backend/internal/handler"
@@ -23,7 +24,15 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 
 	docs.SwaggerInfo.Title = "Embreo Backend API"
 
+	corsConfig := cors.New(cors.Config{
+		AllowOrigins: []string{"localhost:5173"},
+,		AllowMethods: []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
+		AllowHeaders: []string{"Content-Type, access-control-allow-origin, access-control-allow-headers, Authorization"},
+	})
+
 	authMiddleware := middleware.AuthMiddleware(userRepo)
+
+	r.Use(corsConfig)
 
 	v1 := r.Group("/api/v1")
 	{
