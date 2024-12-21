@@ -1,7 +1,7 @@
 
 
 run:
-	air --build.cmd "go build -o bin/api cmd/main.go" --build.bin "./bin/api"
+	air
 
 
 swagger:
