@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils.ts";
+import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent } from "@/components/ui/card.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
 import { ComponentPropsWithoutRef } from "react";
 
 export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div">) {
@@ -14,7 +14,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
         <CardContent className="flex w-full p-8">
           <div className="flex items-center gap-8 w-1/2">
             <img
-              className="object-cover w-fit h-fit"
+              className="object-cover w-fit h-fit hover:scale-105 transition-transform"
               src="./images/login/image-1.png"
             />
           </div>
@@ -24,13 +24,13 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
               <div className="grid gap-2">
                 <Label
                   className="text-start"
-                  htmlFor="email">
-                  Email
+                  htmlFor="username">
+                  Username
                 </Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="account@gmail.com"
+                  id="username"
+                  type="username"
+                  placeholder="username"
                   required
                 />
               </div>
@@ -41,6 +41,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
                 <Input
                   id="password"
                   type="password"
+                  placeholder="password"
                   required
                 />
               </div>

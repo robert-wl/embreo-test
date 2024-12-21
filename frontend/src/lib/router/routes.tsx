@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router";
-import LoginPage from "@/app/login/login-page.tsx";
+import LoginPage from "@/pages/auth/login-page.tsx";
 
 export const routes: RouteObject[] = [
   {
