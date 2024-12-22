@@ -2,6 +2,7 @@ import { Building2, Check, Clock, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import useAuth from "@/hooks/use-auth.ts";
+import RecentActivityCard from "@/components/dashboard/recent-activity-card.tsx";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -74,6 +75,8 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+
+        <RecentActivityCard />
       </div>
       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted md:min-h-min" />
     </>
