@@ -49,6 +49,39 @@ func (h *EventHandler) CreateEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, nil)
 }
 
+// SetStatus @Summary Set event status
+// @Description Set event status
+// @Tags event
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Event ID"
+// @Param status body dto.SetStatusRequest true "ResponseStatus"
+// @Success 200
+// @Failure 400 {object} utils.ErrorResponse
+// @Router /events/{id}/status [post]
+func (h *EventHandler) SetStatus(ctx *gin.Context) {
+	user := ctx.MustGet("user").(*model.User)
+
+	eventID := ctx.Param("id")
+
+	var req dto.SetStatusRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		utils.SendError(ctx, err)
+		return
+	}
+
+	err := h.eventService.SetStatus(user, eventID, &req)
+
+	if err != nil {
+		utils.SendError(ctx, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, nil)
+}
+
 // FindAll @Summary Find all events
 // @Description Find all events
 // @Tags event
@@ -63,6 +96,7 @@ func (h *EventHandler) CreateEvent(ctx *gin.Context) {
 // @Router /events [get]
 func (h *EventHandler) FindAll(ctx *gin.Context) {
 	user := ctx.MustGet("user").(*model.User)
+
 	var req dto.GetEventRequest
 
 	if err := ctx.ShouldBindQuery(&req); err != nil {

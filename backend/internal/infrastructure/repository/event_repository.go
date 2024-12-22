@@ -8,6 +8,7 @@ import (
 
 type EventRepository interface {
 	Create(event *model.Event) error
+	Update(event *model.Event) error
 	FindBySecureID(secureID string) (*model.Event, error)
 	FindAllByCompany(companyID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error)
 	FindAllByVendor(vendorID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error)
@@ -27,6 +28,10 @@ func (r *eventRepository) Create(event *model.Event) error {
 	return r.db.Create(event).Error
 }
 
+func (r *eventRepository) Update(event *model.Event) error {
+	return r.db.Save(event).Error
+}
+
 func (r *eventRepository) FindBySecureID(secureID string) (*model.Event, error) {
 	var event model.Event
 
@@ -36,6 +41,7 @@ func (r *eventRepository) FindBySecureID(secureID string) (*model.Event, error) 
 		Preload("User").
 		Preload("EventType").
 		Preload("EventResponses").
+		Preload("EventResponses.Vendor").
 		First(&event).Error
 
 	if err != nil {
@@ -48,15 +54,18 @@ func (r *eventRepository) FindBySecureID(secureID string) (*model.Event, error) 
 func (r *eventRepository) FindAllByCompany(companyID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error) {
 	var events []*model.Event
 
-	err := r.db.
+	query := r.db.Model(&model.Event{}).
 		Scopes(pagination.Paginate()).
-		Joins("JOIN companies ON companies.id = events.company_id").
-		Joins("JOIN event_types ON event_types.id = events.event_type_id").
-		Where("companies.secure_id = ?", companyID).
-		Where("location LIKE ?", "%"+*search+"%").
-		Where("event_types.name LIKE ?", "%"+*search+"%").
+		Joins("Company", r.db.Where(&model.Company{SecureID: companyID}))
+
+	if search != nil && *search != "" {
+		query = query.Where("location LIKE ?", "%"+*search+"%")
+	}
+
+	err := query.
 		Preload("EventType").
 		Preload("EventResponses").
+		Preload("EventResponses.Vendor").
 		Find(&events).Error
 
 	if err != nil {
@@ -69,16 +78,21 @@ func (r *eventRepository) FindAllByCompany(companyID string, search *string, pag
 func (r *eventRepository) FindAllByVendor(vendorID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error) {
 	var events []*model.Event
 
-	err := r.db.
+	query := r.db.Model(&model.Event{}).
 		Scopes(pagination.Paginate()).
-		Joins("JOIN event_types ON event_types.id = events.event_type_id").
-		Joins("JOIN vendor_event_types ON vendor_event_types.event_type_id = event_types.id").
-		Joins("JOIN vendors ON vendors.id = vendor_event_types.vendor_id").
-		Where("vendors.secure_id = ?", vendorID).
-		Where("event_types.id = events.event_type_id").
-		Where("location LIKE ?", "%"+*search+"%").
+		Joins("JOIN event_types ON events.event_type_id = event_types.id").
+		Joins("JOIN vendor_event_types ON event_types.id = vendor_event_types.event_type_id").
+		Joins("JOIN vendors ON vendor_event_types.vendor_id = vendors.id").
+		Where("vendors.secure_id = ?", vendorID)
+
+	if search != nil && *search != "" {
+		query = query.Where("location LIKE ?", "%"+*search+"%")
+	}
+
+	err := query.
 		Preload("EventType").
 		Preload("EventResponses").
+		Preload("EventResponses.Vendor").
 		Find(&events).Error
 
 	if err != nil {

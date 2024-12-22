@@ -19,11 +19,12 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	userRepo := repository.NewUserRepository(db)
 	eventRepo := repository.NewEventRepository(db)
 	eventTypeRepo := repository.NewEventTypeRepository(db)
+	eventResponseRepo := repository.NewEventResponseRepository(db)
 	companyRepo := repository.NewCompanyRepository(db)
 	vendorRepo := repository.NewVendorRepository(db)
 
 	authService := service.NewAuthService(userRepo)
-	eventService := service.NewEventService(eventRepo, eventTypeRepo, companyRepo, vendorRepo)
+	eventService := service.NewEventService(eventRepo, eventTypeRepo, eventResponseRepo, companyRepo, vendorRepo)
 	vendorService := service.NewVendorService(vendorRepo)
 
 	authHandler := handler.NewAuthHandler(authService)
@@ -63,6 +64,7 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 			event.POST("", authMiddleware, eventHandler.CreateEvent)
 			event.GET("", authMiddleware, eventHandler.FindAll)
 			event.GET("/:id", authMiddleware, eventHandler.FindBySecureID)
+			event.POST("/:id/status", authMiddleware, eventHandler.SetStatus)
 			event.GET("/:id/vendors", authMiddleware, vendorHandler.FindAllByEventType)
 			event.GET("/types", authMiddleware, eventHandler.FindAllType)
 		}

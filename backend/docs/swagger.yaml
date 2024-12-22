@@ -35,6 +35,15 @@ definitions:
       access_token:
         type: string
     type: object
+  dto.SetStatusRequest:
+    properties:
+      remarks:
+        type: string
+      status:
+        $ref: '#/definitions/model.ResponseStatus'
+    required:
+    - status
+    type: object
   model.Company:
     properties:
       created_at:
@@ -52,6 +61,8 @@ definitions:
     type: object
   model.Event:
     properties:
+      accepted_at:
+        type: string
       company:
         $ref: '#/definitions/model.Company'
       created_at:
@@ -72,7 +83,7 @@ definitions:
       location:
         type: string
       status:
-        type: string
+        $ref: '#/definitions/model.EventStatus'
       updated_at:
         type: string
       user:
@@ -89,12 +100,20 @@ definitions:
       remarks:
         type: string
       status:
-        type: string
+        $ref: '#/definitions/model.ResponseStatus'
       updated_at:
         type: string
       vendor:
         $ref: '#/definitions/model.Vendor'
     type: object
+  model.EventStatus:
+    enum:
+    - pending
+    - approved
+    type: string
+    x-enum-varnames:
+    - EventPending
+    - EventApproved
   model.EventType:
     properties:
       created_at:
@@ -106,6 +125,16 @@ definitions:
       updated_at:
         type: string
     type: object
+  model.ResponseStatus:
+    enum:
+    - pending
+    - approved
+    - rejected
+    type: string
+    x-enum-varnames:
+    - ResponsePending
+    - ResponseApproved
+    - ResponseRejected
   model.Role:
     enum:
     - company
@@ -291,6 +320,36 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.Event'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - BearerAuth: []
+      tags:
+      - event
+  /events/{id}/status:
+    post:
+      consumes:
+      - application/json
+      description: Set event status
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: ResponseStatus
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SetStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
         "400":
           description: Bad Request
           schema:

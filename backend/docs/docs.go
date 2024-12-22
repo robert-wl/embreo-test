@@ -260,6 +260,54 @@ const docTemplate = `{
                 }
             }
         },
+        "/events/{id}/status": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Set event status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "ResponseStatus",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SetStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/events/{id}/vendors": {
             "get": {
                 "security": [
@@ -359,6 +407,20 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.SetStatusRequest": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "remarks": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/model.ResponseStatus"
+                }
+            }
+        },
         "model.Company": {
             "type": "object",
             "properties": {
@@ -385,6 +447,9 @@ const docTemplate = `{
         "model.Event": {
             "type": "object",
             "properties": {
+                "accepted_at": {
+                    "type": "string"
+                },
                 "company": {
                     "$ref": "#/definitions/model.Company"
                 },
@@ -414,7 +479,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "type": "string"
+                    "$ref": "#/definitions/model.EventStatus"
                 },
                 "updated_at": {
                     "type": "string"
@@ -440,7 +505,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "type": "string"
+                    "$ref": "#/definitions/model.ResponseStatus"
                 },
                 "updated_at": {
                     "type": "string"
@@ -449,6 +514,17 @@ const docTemplate = `{
                     "$ref": "#/definitions/model.Vendor"
                 }
             }
+        },
+        "model.EventStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "approved"
+            ],
+            "x-enum-varnames": [
+                "EventPending",
+                "EventApproved"
+            ]
         },
         "model.EventType": {
             "type": "object",
@@ -466,6 +542,19 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "model.ResponseStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "approved",
+                "rejected"
+            ],
+            "x-enum-varnames": [
+                "ResponsePending",
+                "ResponseApproved",
+                "ResponseRejected"
+            ]
         },
         "model.Role": {
             "type": "string",
