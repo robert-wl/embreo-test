@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"log"
@@ -44,6 +45,22 @@ func NewAppError(err error, code int, message string) *AppError {
 	}
 }
 
+func formatValidationErrors(validationErrors validator.ValidationErrors) []string {
+	var formattedErrors []string
+
+	for _, fieldError := range validationErrors {
+		err := fmt.Sprintf(
+			"field: %s has an incorrect format: %s",
+			fieldError.Field(),
+			fieldError.Tag(),
+		)
+
+		formattedErrors = append(formattedErrors, err)
+	}
+
+	return formattedErrors
+}
+
 func SendError(ctx *gin.Context, err error) {
 	var appErr *AppError
 	if errors.As(err, &appErr) {
@@ -58,13 +75,14 @@ func SendError(ctx *gin.Context, err error) {
 		return
 	}
 
-	if errors.As(err, &validator.ValidationErrors{}) {
+	var valErr validator.ValidationErrors
+	if errors.As(err, &valErr) {
 		ctx.JSON(
 			http.StatusBadRequest,
 			NewErrorResponse(
 				http.StatusText(http.StatusBadRequest),
 				http.StatusBadRequest,
-				err.Error(),
+				formatValidationErrors(valErr)...,
 			),
 		)
 		return
