@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+	"github.com/lib/pq"
 	"github.com/robert-wl/backend/internal/domain/model"
 	"github.com/robert-wl/backend/internal/dto"
 	"github.com/robert-wl/backend/internal/infrastructure/repository"
@@ -49,7 +51,7 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 		)
 	}
 
-	var dates []time.Time
+	var dates pq.StringArray
 
 	for _, date := range dto.Dates {
 		parsedTime, err := time.Parse(time.RFC3339, date)
@@ -70,7 +72,7 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 			)
 		}
 
-		dates = append(dates, parsedTime)
+		dates = append(dates, parsedTime.Format("2006-01-02 15:04:05"))
 	}
 
 	event := model.Event{
@@ -80,6 +82,8 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 		Dates:     dates,
 		Location:  dto.Location,
 	}
+
+	fmt.Println(event)
 
 	err = s.eventRepo.Create(&event)
 
