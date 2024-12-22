@@ -1,20 +1,15 @@
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog.tsx";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { CalendarPlus, Send } from "lucide-react";
+import { CalendarPlus } from "lucide-react";
 import RegisterEventForm from "@/pages/dashboard/(company)/_components/register-event-form.tsx";
+import { useState } from "react";
 
 export default function RegisterEventModal() {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
@@ -28,20 +23,7 @@ export default function RegisterEventModal() {
           <DialogTitle>Apply for Event</DialogTitle>
           <DialogDescription>Fill out the form below to apply for an event. The event will be distributed to various vendors.</DialogDescription>
         </DialogHeader>
-        <RegisterEventForm />
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button
-              variant="outline"
-              className="mr-2">
-              Cancel
-            </Button>
-          </DialogClose>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <Send className="mr-2 h-4 w-4" />
-            Submit
-          </Button>
-        </DialogFooter>
+        <RegisterEventForm setModalOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

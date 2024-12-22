@@ -11,11 +11,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 
 interface Props extends ComponentProps<typeof Button> {
   placeholder?: string;
+  onValueChange?: (date: Date) => void;
 }
 
-export function DatePicker({ placeholder = "Pick a date", className, ...props }: Props) {
+export function DatePicker({ placeholder = "Pick a date", onValueChange, className, ...props }: Props) {
   const [date, setDate] = React.useState<Date>();
 
+  React.useEffect(() => {
+    if (onValueChange && date) {
+      onValueChange(date);
+    }
+  }, [date]);
   return (
     <Popover>
       <PopoverTrigger asChild>

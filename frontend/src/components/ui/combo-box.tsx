@@ -1,13 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { ComponentProps } from "react";
+import { ComponentProps, useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { UseFormRegisterReturn } from "react-hook-form";
 import { Maybe } from "@/lib/type/utils.ts";
 import LoadingComboBox from "@/components/ui/loading-combo-box.tsx";
 
@@ -18,16 +17,22 @@ export interface ValueLabel {
 
 interface Props extends ComponentProps<typeof Popover> {
   values: Maybe<ValueLabel[]>;
-  register?: UseFormRegisterReturn;
   placeholder?: string;
+  onValueChange?: (value: string) => void;
 }
-export function Combobox({ values, register, placeholder, ...props }: Props) {
+export function Combobox({ values, placeholder, onValueChange, ...props }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
   if (!values) {
     return <LoadingComboBox />;
   }
+
+  useEffect(() => {
+    if (onValueChange) {
+      onValueChange(value);
+    }
+  }, [value]);
 
   return (
     <Popover
@@ -49,7 +54,6 @@ export function Combobox({ values, register, placeholder, ...props }: Props) {
           <CommandInput
             placeholder={placeholder}
             className="h-9"
-            {...register}
           />
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>
