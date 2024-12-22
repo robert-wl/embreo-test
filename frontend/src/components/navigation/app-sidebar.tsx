@@ -1,5 +1,5 @@
-import * as React from "react";
-import { PieChart } from "lucide-react";
+import { ComponentProps } from "react";
+import { HomeIcon } from "lucide-react";
 import { NavUser } from "@/components/navigation/nav-user.tsx";
 import {
   Sidebar,
@@ -24,14 +24,14 @@ const data = {
   },
   navigation: [
     {
-      name: "Event Management",
+      name: "Dashboard",
       url: "#",
-      icon: PieChart,
+      icon: HomeIcon,
     },
   ],
 };
 
-export function Sidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar
       collapsible="icon"
@@ -43,10 +43,10 @@ export function Sidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenuButton
                 size="lg"
                 className="hover:bg-transparent cursor-auto">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-white text-black">
                   <EventEazyIcon className="size-4" />
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className="grid flex-1 text-left text-sm leading-tight text-white">
                   <span className="truncate font-semibold">EventEazy</span>
                 </div>
               </SidebarMenuButton>
@@ -56,12 +56,14 @@ export function Sidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-          <SidebarGroupLabel>Projects</SidebarGroupLabel>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarMenu>
             {data.navigation.map((item) => (
               <SidebarMenuItem key={item.name}>
                 <SidebarMenuButton asChild>
-                  <a href={item.url}>
+                  <a
+                    className="flex gap-4"
+                    href={item.url}>
                     <item.icon />
                     <span>{item.name}</span>
                   </a>

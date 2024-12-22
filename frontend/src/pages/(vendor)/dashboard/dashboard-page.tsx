@@ -1,31 +1,89 @@
-import { Sidebar } from "@/components/navigation/sidebar.tsx";
-import { Separator } from "@/components/ui/separator";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Building2, Check, Clock, Settings, Users, X } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
+import { Label } from "@/components/ui/label.tsx";
 
 export default function DashboardPage() {
   return (
-    <SidebarProvider>
-      <Sidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 h-4"
-            />
-            <h2 className="font-semibold text-xl">Dashboard</h2>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+    <>
+      <div className="flex">
+        <img
+          src="/images/dashboard/image-1.png"
+          alt="Hello"
+          className="w-64 h-64"
+        />
+        <div className="flex flex-col justify-center gap-4">
+          <h1 className="text-4xl font-bold">Hello, John Doe</h1>
+          <p className="text-lg font-medium text-gray-500">Welcome to your dashboard. Here you can manage your account and view your stats.</p>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </div>
+      <div className="grid gap-6 md:grid-cols-4">
+        <Card className="transform transition-all hover:scale-[101%]">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <h3 className="font-bold text-gray-700">Company Overview</h3>
+            <Building2 className="w-5 h-5 text-blue-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label className="text-sm text-gray-500">Quick Actions</Label>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-gray-700 hover:text-blue-600 cursor-pointer">
+                    <Users className="w-4 h-4" />
+                    <span>Manage Users</span>
+                  </li>
+                  <li className="flex items-center gap-2 text-gray-700 hover:text-blue-600 cursor-pointer">
+                    <Settings className="w-4 h-4" />
+                    <span>Settings</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="transform transition-all hover:scale-[101%]">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-yellow-100 rounded-lg">
+                <Clock className="w-6 h-6 text-yellow-600" />
+              </div>
+              <div>
+                <Label className="text-3xl font-bold text-gray-900">1</Label>
+                <h3 className="text-sm font-medium text-gray-600">Pending</h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="transform transition-all hover:scale-[101%]">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-green-100 rounded-lg">
+                <Check className="w-6 h-6 text-green-600" />
+              </div>
+              <div>
+                <Label className="text-3xl font-bold text-gray-900">1</Label>
+                <h3 className="text-sm font-medium text-gray-600">Accepted</h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="transform transition-all hover:scale-[101%]">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-red-100 rounded-lg">
+                <X className="w-6 h-6 text-red-600" />
+              </div>
+              <div>
+                <Label className="text-3xl font-bold text-gray-900">1</Label>
+                <h3 className="text-sm font-medium text-gray-600">Rejected</h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="min-h-[100vh] flex-1 rounded-xl bg-muted md:min-h-min" />
+    </>
   );
 }
