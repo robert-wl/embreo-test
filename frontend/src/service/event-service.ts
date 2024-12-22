@@ -21,6 +21,38 @@ export function getAllEventTypes(options?: QueryParams<EventTypeEntity[]>) {
   });
 }
 
+interface GetEventsParams {
+  search?: string;
+  page?: number;
+  limit?: number;
+}
+
+export function getEvents(params: GetEventsParams, options?: QueryParams<EventEntity[]>) {
+  return useQuery({
+    queryKey: ["events"],
+    queryFn: async () => {
+      const searchParams = new URLSearchParams();
+
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined) {
+            searchParams.append(key, value.toString());
+          }
+        });
+      }
+
+      const [data, error] = await api.get<EventTypeEntity[]>(`/api/v1/events?${searchParams.toString()}`);
+
+      if (error) {
+        throw new Error("An error occurred while fetching the events");
+      }
+
+      return data;
+    },
+    ...options,
+  });
+}
+
 export function useCreateEvent(options?: MutationParams<void, CreateEventDTO>) {
   return useMutation({
     mutationFn: async (body: CreateEventDTO) => {

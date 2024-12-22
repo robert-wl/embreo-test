@@ -23,8 +23,8 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime;not null"`
 
 	CompanyID *uint    `json:"-" gorm:"index"`
-	VendorID  *uint    `json:"-" gorm:"index"`
 	Company   *Company `json:"company,omitempty" gorm:"foreignKey:CompanyID"`
+	VendorID  *uint    `json:"-" gorm:"index"`
 	Vendor    *Vendor  `json:"vendor,omitempty" gorm:"foreignKey:VendorID"`
 }
 
