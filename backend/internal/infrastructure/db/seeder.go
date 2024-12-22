@@ -146,7 +146,7 @@ func (s *seeder) SeedUser() error {
 	}
 
 	count := rand.Intn(10) + 5
-	roles := []string{"company", "vendor"}
+	roles := []model.Role{model.CompanyRole, model.VendorRole}
 
 	for i := 0; i < count; i++ {
 		username := faker.Username()
@@ -159,10 +159,10 @@ func (s *seeder) SeedUser() error {
 
 		var selectedCompany *model.Company
 		var selectedVendor *model.Vendor
-		if role == "company" && len(companies) > 0 {
+		if role == model.CompanyRole && len(companies) > 0 {
 			randomIndex := rand.Intn(len(companies))
 			selectedCompany = &companies[randomIndex]
-		} else if role == "vendor" && len(vendors) > 0 {
+		} else if role == model.VendorRole && len(vendors) > 0 {
 			randomIndex := rand.Intn(len(vendors))
 			selectedVendor = &vendors[randomIndex]
 		}

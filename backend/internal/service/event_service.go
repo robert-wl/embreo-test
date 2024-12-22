@@ -80,9 +80,9 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 	}
 
 	event := model.Event{
-		EventType: *eventType,
-		Company:   *company,
-		User:      *user,
+		EventType: eventType,
+		Company:   company,
+		User:      user,
 		Dates:     dates,
 		Location:  dto.Location,
 	}
@@ -105,6 +105,10 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 func (s *eventService) FindAllByCompany(companyID string, dto *dto.GetEventRequest) ([]*model.Event, error) {
 	dto.Pagination = pagination.Process(dto.Pagination)
 
+	if dto.Search == nil {
+		dto.Search = new(string)
+	}
+
 	res, err := s.eventRepo.FindAllByCompany(companyID, dto.Search, dto.Pagination)
 
 	if err != nil {
@@ -120,6 +124,10 @@ func (s *eventService) FindAllByCompany(companyID string, dto *dto.GetEventReque
 
 func (s *eventService) FindAllByVendor(vendorID string, dto *dto.GetEventRequest) ([]*model.Event, error) {
 	dto.Pagination = pagination.Process(dto.Pagination)
+
+	if dto.Search == nil {
+		dto.Search = new(string)
+	}
 
 	res, err := s.eventRepo.FindAllByVendor(vendorID, dto.Search, dto.Pagination)
 

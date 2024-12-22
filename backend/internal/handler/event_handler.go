@@ -49,6 +49,18 @@ func (h *EventHandler) CreateEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, nil)
 }
 
+// FindAll @Summary Find all events
+// @Description Find all events
+// @Tags event
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param page query int false "Page"
+// @Param limit query int false "Limit"
+// @Param search query string false "Search"
+// @Success 200 {array} model.Event
+// @Failure 400 {object} utils.ErrorResponse
+// @Router /events [get]
 func (h *EventHandler) FindAll(ctx *gin.Context) {
 	user := ctx.MustGet("user").(*model.User)
 	var req dto.GetEventRequest

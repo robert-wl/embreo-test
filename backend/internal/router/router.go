@@ -58,6 +58,7 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 		event.Use(authMiddleware)
 		{
 			event.POST("", authMiddleware, eventHandler.CreateEvent)
+			event.GET("", authMiddleware, eventHandler.FindAll)
 			event.GET("/types", authMiddleware, eventHandler.FindAllType)
 		}
 	}

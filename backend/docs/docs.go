@@ -88,6 +88,60 @@ const docTemplate = `{
             }
         },
         "/events": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Find all events",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Event"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -169,6 +223,9 @@ const docTemplate = `{
         "dto.CreateEventRequest": {
             "type": "object",
             "required": [
+                "company_id",
+                "dates",
+                "event_type_id",
                 "location"
             ],
             "properties": {
@@ -177,6 +234,8 @@ const docTemplate = `{
                 },
                 "dates": {
                     "type": "array",
+                    "maxItems": 3,
+                    "minItems": 3,
                     "items": {
                         "type": "string"
                     }
@@ -235,6 +294,48 @@ const docTemplate = `{
                 }
             }
         },
+        "model.Event": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "$ref": "#/definitions/model.Company"
+                },
+                "company_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "dates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "event_type": {
+                    "$ref": "#/definitions/model.EventType"
+                },
+                "event_type_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/model.User"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.EventType": {
             "type": "object",
             "properties": {
@@ -252,6 +353,17 @@ const docTemplate = `{
                 }
             }
         },
+        "model.Role": {
+            "type": "string",
+            "enum": [
+                "company",
+                "vendor"
+            ],
+            "x-enum-varnames": [
+                "CompanyRole",
+                "VendorRole"
+            ]
+        },
         "model.User": {
             "type": "object",
             "properties": {
@@ -265,7 +377,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "type": "string"
+                    "$ref": "#/definitions/model.Role"
                 },
                 "updated_at": {
                     "type": "string"
