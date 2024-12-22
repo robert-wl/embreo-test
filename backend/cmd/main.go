@@ -25,7 +25,7 @@ func main() {
 	}
 
 	seeder := db.NewSeeder(database)
-	err = seeder.SeedUser()
+	err = seeder.Seed()
 
 	if err != nil {
 		panic("failed to migrate db" + err.Error())

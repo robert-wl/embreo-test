@@ -23,7 +23,10 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 func (r *userRepository) FindBySecureID(secureID string) (*model.User, error) {
 	var user model.User
 
-	if err := r.db.Where("secure_id = ?", secureID).First(&user).Error; err != nil {
+	if err := r.db.Where("secure_id = ?", secureID).
+		Preload("Company").
+		Preload("Vendor").
+		First(&user).Error; err != nil {
 		return nil, err
 	}
 

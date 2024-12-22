@@ -25,8 +25,8 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	docs.SwaggerInfo.Title = "Embreo Backend API"
 
 	corsConfig := cors.New(cors.Config{
-		AllowOrigins: []string{"localhost:5173"},
-,		AllowMethods: []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
 		AllowHeaders: []string{"Content-Type, access-control-allow-origin, access-control-allow-headers, Authorization"},
 	})
 
