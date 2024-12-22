@@ -2,7 +2,8 @@ import { Building2, Check, Clock, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import useAuth from "@/hooks/use-auth.ts";
-import RecentActivityCard from "@/components/dashboard/recent-activity-card.tsx";
+// import RecentActivityCard from "@/components/dashboard/recent-activity-card.tsx";
+import EventTable from "@/pages/dashboard/_components/event-table.tsx";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -76,7 +77,18 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <RecentActivityCard />
+        {/*<RecentActivityCard />*/}
+        <Card className="transform transition-all hover:scale-[101%] col-span-3">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">Event Overview</h2>
+              <p className="text-sm text-gray-500 mt-1">Track your company's created events</p>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <EventTable />
+          </CardContent>
+        </Card>
       </div>
       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted md:min-h-min" />
     </>
