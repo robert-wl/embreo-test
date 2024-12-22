@@ -29,6 +29,7 @@ type Event struct {
 
 type EventStatus string
 
+// TODO this logic
 const (
 	EventPending  EventStatus = "pending"
 	EventApproved EventStatus = "approved"
