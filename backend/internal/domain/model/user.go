@@ -6,12 +6,19 @@ import (
 	"time"
 )
 
+type Role string
+
+const (
+	CompanyRole Role = "company"
+	VendorRole  Role = "vendor"
+)
+
 type User struct {
 	ID        uint      `json:"-" gorm:"primary_key"`
 	SecureID  string    `json:"id" gorm:"type:char(36);uniqueIndex;not null"`
 	Username  string    `json:"username" gorm:"uniqueIndex;not null"`
 	Password  string    `json:"-" gorm:"not null"`
-	Role      string    `json:"role" gorm:"not null;default:'company';check:role IN ('company', 'vendor')"`
+	Role      Role      `json:"role" gorm:"not null;default:'company';check:role IN ('company', 'vendor')"`
 	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime;not null"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime;not null"`
 
