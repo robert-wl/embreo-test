@@ -31,7 +31,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
           <div className="flex items-center gap-8 w-1/2">
             <img
               className="object-cover w-fit h-fit hover:scale-105 transition-transform"
-              src="./images/login/image-1.png"
+              src="/images/login/image-1.png"
             />
           </div>
           <form
