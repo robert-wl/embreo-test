@@ -19,7 +19,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
 
   const handleLogin = async (data: LoginDTO) => {
     await login(data);
-    navigate("/home");
+    navigate("/");
   };
 
   return (

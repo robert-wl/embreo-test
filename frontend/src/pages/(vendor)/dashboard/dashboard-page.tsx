@@ -1,8 +1,10 @@
-import { Building2, Check, Clock, Settings, Users, X } from "lucide-react";
+import { Building2, Check, Clock, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import { Label } from "@/components/ui/label.tsx";
+import useAuth from "@/hooks/use-auth.ts";
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   return (
     <>
       <div className="flex">
@@ -12,7 +14,7 @@ export default function DashboardPage() {
           className="w-64 h-64"
         />
         <div className="flex flex-col justify-center gap-4">
-          <h1 className="text-4xl font-bold">Hello, John Doe</h1>
+          <h1 className="text-4xl font-bold">Hello, {user?.username}</h1>
           <p className="text-lg font-medium text-gray-500">Welcome to your dashboard. Here you can manage your account and view your stats.</p>
         </div>
       </div>
@@ -25,17 +27,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-sm text-gray-500">Quick Actions</Label>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2 text-gray-700 hover:text-blue-600 cursor-pointer">
-                    <Users className="w-4 h-4" />
-                    <span>Manage Users</span>
-                  </li>
-                  <li className="flex items-center gap-2 text-gray-700 hover:text-blue-600 cursor-pointer">
-                    <Settings className="w-4 h-4" />
-                    <span>Settings</span>
-                  </li>
-                </ul>
+                <Label className="text-sm text-gray-500">Name: {user?.company?.name}</Label>
               </div>
             </div>
           </CardContent>
