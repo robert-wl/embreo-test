@@ -37,6 +37,7 @@ func (r *eventRepository) FindAllByCompany(companyID string, search *string, pag
 		Where("location LIKE ?", "%"+*search+"%").
 		Where("event_types.name LIKE ?", "%"+*search+"%").
 		Preload("EventType").
+		Preload("EventResponses").
 		Find(&events).Error
 
 	if err != nil {
@@ -56,6 +57,7 @@ func (r *eventRepository) FindAllByVendor(vendorID string, search *string, pagin
 		Where("vendors.secure_id = ?", vendorID).
 		Where("location LIKE ?", "%"+*search+"%").
 		Preload("EventType").
+		Preload("EventResponses").
 		Find(&events).Error
 
 	if err != nil {

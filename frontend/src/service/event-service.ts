@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import api from "@/lib/api/fetch.ts";
 import { CreateEventDTO } from "@/lib/model/schema/event/create-event.dto.ts";
 import { LoginResponse } from "@/lib/model/response/auth/login.response.ts";
+import { EventEntity } from "@/lib/model/entity/event.entity.ts";
 
 export function getAllEventTypes(options?: QueryParams<EventTypeEntity[]>) {
   return useQuery({
@@ -41,7 +42,7 @@ export function getEvents(params: GetEventsParams, options?: QueryParams<EventEn
         });
       }
 
-      const [data, error] = await api.get<EventTypeEntity[]>(`/api/v1/events?${searchParams.toString()}`);
+      const [data, error] = await api.get<EventEntity[]>(`/api/v1/events?${searchParams.toString()}`);
 
       if (error) {
         throw new Error("An error occurred while fetching the events");

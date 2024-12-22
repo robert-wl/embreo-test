@@ -24,7 +24,7 @@ function handleError(error: any) {
     if (error.response?.status === 401) {
       localStorage.removeItem(constant.TOKEN_KEY);
       localStorage.removeItem(constant.USER_KEY);
-      window.location.href = "/login";
+      window.location.href = "/auth";
     }
 
     return {
