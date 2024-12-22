@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+	"time"
+)
 
 type Event struct {
 	ID          uint        `json:"-" gorm:"primary_key"`
@@ -11,4 +15,9 @@ type Event struct {
 
 	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime;not null"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime;not null"`
+}
+
+func (a *Event) BeforeCreate(tx *gorm.DB) (err error) {
+	a.SecureID = uuid.New().String()
+	return
 }

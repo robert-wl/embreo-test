@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+	"time"
+)
 
 type EventResponse struct {
 	ID        uint      `json:"-"`
@@ -14,4 +18,9 @@ type EventResponse struct {
 
 	Event  Event  `json:"event" gorm:"foreignKey:EventID"`
 	Vendor Vendor `json:"vendor" gorm:"foreignKey:VendorID"`
+}
+
+func (a *EventResponse) BeforeCreate(tx *gorm.DB) (err error) {
+	a.SecureID = uuid.New().String()
+	return
 }
