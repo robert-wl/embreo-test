@@ -2,10 +2,9 @@ import { Building2, Check, Clock, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import useAuth from "@/hooks/use-auth.ts";
-import RecentActivityCard from "@/components/dashboard/recent-activity-card.tsx";
-import EventOverviewCard from "@/pages/dashboard/(company)/_components/event-overview-card.tsx";
+import EventOverviewCard from "@/pages/dashboard/_components/event-overview-card.tsx";
 
-export default function DashboardPage() {
+export default function DashboardPageCompany() {
   const { user } = useAuth();
   return (
     <>
@@ -77,7 +76,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <RecentActivityCard />
         <EventOverviewCard />
       </div>
       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted md:min-h-min" />

@@ -2,10 +2,12 @@ import GenericTable from "@/components/table/generic-table.tsx";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { EventEntity } from "@/lib/model/entity/event.entity.ts";
 import { useMemo } from "react";
-import { Badge, CalendarIcon, MapPinIcon, PencilIcon, TrashIcon } from "lucide-react";
-import { cn } from "@/lib/utils.ts";
+import { CalendarIcon, MapPinIcon } from "lucide-react";
+import ViewEventModal from "@/pages/dashboard/_components/view-event-modal.tsx";
+import EventBadge from "@/components/event/event-badge.tsx";
 
 interface TableContent {
+  event: EventEntity;
   name: string;
   vendor: string;
   dates: string[];
@@ -61,15 +63,7 @@ const tableColumns: ColumnDef<TableContent>[] = [
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
 
-      return (
-        <div
-          className={cn(
-            "flex gap-2 rounded-2xl items-center w-fit py-1.5 px-2",
-            status === "accepted" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700",
-          )}>
-          {status === "accepted" ? "Accepted" : "Pending"}
-        </div>
-      );
+      return <EventBadge status={status} />;
     },
   },
   {
@@ -81,9 +75,7 @@ const tableColumns: ColumnDef<TableContent>[] = [
     header: "Actions",
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <button className="rounded-md p-2 hover:bg-gray-100">
-          <PencilIcon className="h-4 w-4 text-gray-600" />
-        </button>
+        <ViewEventModal event={row.original.event} />
       </div>
     ),
   },
@@ -98,6 +90,7 @@ export default function EventTable({ data }: Props) {
     () =>
       data.map((event) => {
         return {
+          event: event,
           name: event.event_type?.name ?? "N/A",
           vendor: "N/A",
           dates: event.dates.map((date) => new Date(date).toLocaleDateString()),

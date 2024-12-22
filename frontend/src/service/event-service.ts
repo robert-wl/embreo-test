@@ -5,6 +5,7 @@ import api from "@/lib/api/fetch.ts";
 import { CreateEventDTO } from "@/lib/model/schema/event/create-event.dto.ts";
 import { LoginResponse } from "@/lib/model/response/auth/login.response.ts";
 import { EventEntity } from "@/lib/model/entity/event.entity.ts";
+import { ChangeStatusDTO } from "@/lib/model/schema/event/change-status.dto.ts";
 
 export function getAllEventTypes(options?: QueryParams<EventTypeEntity[]>) {
   return useQuery({
@@ -54,6 +55,22 @@ export function getEvents(params: GetEventsParams, options?: QueryParams<EventEn
   });
 }
 
+export function getEventById(id: string, options?: QueryParams<EventEntity>) {
+  return useQuery({
+    queryKey: ["event", id],
+    queryFn: async () => {
+      const [data, error] = await api.get<EventEntity>(`/api/v1/events/${id}`);
+
+      if (error) {
+        throw new Error("An error occurred while fetching the event");
+      }
+
+      return data;
+    },
+    ...options,
+  });
+}
+
 export function useCreateEvent(options?: MutationParams<void, CreateEventDTO>) {
   return useMutation({
     mutationFn: async (body: CreateEventDTO) => {
@@ -61,6 +78,19 @@ export function useCreateEvent(options?: MutationParams<void, CreateEventDTO>) {
 
       if (error) {
         throw new Error("An error occurred while creating event");
+      }
+    },
+    ...options,
+  });
+}
+
+export function useChangeStatus(id: string, options?: MutationParams<void, ChangeStatusDTO>) {
+  return useMutation({
+    mutationFn: async (body) => {
+      const [_, error] = await api.post<void>(`/api/v1/events/${id}/status`, body);
+
+      if (error) {
+        throw new Error("An error occurred while changing the event status");
       }
     },
     ...options,

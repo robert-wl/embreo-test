@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent } from "@/components/ui/card.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, useEffect } from "react";
 import useAuth from "@/hooks/use-auth.ts";
 import { useForm } from "react-hook-form";
 import { LoginDTO, loginSchema } from "@/lib/model/schema/auth/login.dto.ts";
@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 
 export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div">) {
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const { register, handleSubmit } = useForm<LoginDTO>({
     resolver: zodResolver(loginSchema),
   });
@@ -19,8 +19,13 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
 
   const handleLogin = async (data: LoginDTO) => {
     await login(data);
-    navigate("/");
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div

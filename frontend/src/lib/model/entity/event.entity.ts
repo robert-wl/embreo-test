@@ -6,7 +6,7 @@ export type EventEntity = {
   id: string;
   dates: string[];
   location: string;
-  status: string;
+  status: EventStatus;
   created_at: string;
   updated_at: string;
 
@@ -14,3 +14,9 @@ export type EventEntity = {
   event_type?: EventTypeEntity;
   user?: UserEntity;
 };
+
+export enum EventStatus {
+  PENDING = "pending",
+  APPROVED = "approved",
+  REJECTED = "rejected",
+}

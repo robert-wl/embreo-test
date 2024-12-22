@@ -8,7 +8,7 @@ export default function EventOverviewCard({ ...props }: ComponentProps<typeof Ca
   const { data } = getEvents({});
   return (
     <Card
-      className="transform transition-all col-span-3"
+      className="transform transition-all col-span-4"
       {...props}>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
