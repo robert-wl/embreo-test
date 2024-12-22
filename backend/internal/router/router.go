@@ -17,10 +17,14 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	r := gin.Default()
 
 	userRepo := repository.NewUserRepository(db)
+	eventRepo := repository.NewEventRepository(db)
+	eventTypeRepo := repository.NewEventTypeRepository(db)
 
 	authService := service.NewAuthService(userRepo)
+	eventService := service.NewEventService(eventRepo, eventTypeRepo)
 
 	authHandler := handler.NewAuthHandler(authService)
+	eventHandler := handler.NewEventHandler(eventService)
 
 	docs.SwaggerInfo.Title = "Embreo Backend API"
 
@@ -47,6 +51,12 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 			auth.POST("/login", authHandler.LogIn)
 
 			auth.GET("/me", authMiddleware, authHandler.Me)
+		}
+
+		event := v1.Group("/events")
+		event.Use(authMiddleware)
+		{
+			event.GET("/types", authMiddleware, eventHandler.FindAllType)
 		}
 	}
 
