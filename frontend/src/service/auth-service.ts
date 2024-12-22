@@ -9,13 +9,13 @@ export function getCurrentUser(options?: QueryParams<UserEntity>) {
   return useQuery({
     queryKey: ["current-user"],
     queryFn: async () => {
-      const [data, error] = await api.get("/api/v1/auth/me");
+      const [data, error] = await api.get<UserEntity>("/api/v1/auth/me");
 
       if (error) {
         throw new Error("An error occurred while fetching the current user");
       }
 
-      return data as UserEntity;
+      return data;
     },
     ...options,
   });
