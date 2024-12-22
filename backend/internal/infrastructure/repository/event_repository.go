@@ -52,9 +52,11 @@ func (r *eventRepository) FindAllByVendor(vendorID string, search *string, pagin
 
 	err := r.db.
 		Scopes(pagination.Paginate()).
-		Joins("JOIN event_vendors ON event_vendors.event_id = events.id").
-		Joins("vendors ON vendors.id = event_vendors.vendor_id").
+		Joins("JOIN event_types ON event_types.id = events.event_type_id").
+		Joins("JOIN vendor_event_types ON vendor_event_types.event_type_id = event_types.id").
+		Joins("JOIN vendors ON vendors.id = vendor_event_types.vendor_id").
 		Where("vendors.secure_id = ?", vendorID).
+		Where("event_types.id = events.event_type_id").
 		Where("location LIKE ?", "%"+*search+"%").
 		Preload("EventType").
 		Preload("EventResponses").
