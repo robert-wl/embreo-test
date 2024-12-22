@@ -299,6 +299,35 @@ paths:
       - BearerAuth: []
       tags:
       - event
+  /events/{id}/vendors:
+    get:
+      consumes:
+      - application/json
+      description: Find all vendors by event
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Vendor'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Find all vendors by event
+      tags:
+      - vendor
   /events/types:
     get:
       consumes:
