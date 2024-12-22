@@ -34,3 +34,10 @@ func (p *Pagination) GetLimit() int {
 
 	return *p.Limit
 }
+
+func Process(pagination *Pagination) *Pagination {
+	if pagination == nil {
+		return new(Pagination)
+	}
+	return pagination
+}

@@ -6,7 +6,7 @@ import (
 )
 
 type EventTypeRepository interface {
-	FindAll() ([]model.EventType, error)
+	FindAll() ([]*model.EventType, error)
 	FindBySecureID(secureID string) (*model.EventType, error)
 }
 
@@ -20,8 +20,8 @@ func NewEventTypeRepository(db *gorm.DB) EventTypeRepository {
 	}
 }
 
-func (r *eventTypeRepository) FindAll() ([]model.EventType, error) {
-	var events []model.EventType
+func (r *eventTypeRepository) FindAll() ([]*model.EventType, error) {
+	var events []*model.EventType
 
 	if err := r.db.Find(&events).Error; err != nil {
 		return nil, err

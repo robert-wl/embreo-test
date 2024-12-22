@@ -49,6 +49,25 @@ func (h *EventHandler) CreateEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, nil)
 }
 
+func (h *EventHandler) FindAll(ctx *gin.Context) {
+	user := ctx.MustGet("user").(*model.User)
+	var req dto.GetEventRequest
+
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		utils.SendError(ctx, err)
+		return
+	}
+
+	res, err := h.eventService.FindAll(user, &req)
+
+	if err != nil {
+		utils.SendError(ctx, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, res)
+}
+
 // FindAllType @Summary Find all event types
 // @Description Find all event types
 // @Tags event
