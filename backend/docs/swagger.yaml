@@ -1,5 +1,20 @@
 basePath: /api/v1
 definitions:
+  dto.CreateEventRequest:
+    properties:
+      company_id:
+        type: string
+      dates:
+        items:
+          type: string
+        type: array
+      event_type_id:
+        type: string
+      location:
+        type: string
+    required:
+    - location
+    type: object
   dto.LogInRequest:
     properties:
       password:
@@ -141,6 +156,31 @@ paths:
       - BearerAuth: []
       tags:
       - authentication
+  /events:
+    post:
+      consumes:
+      - application/json
+      description: Create an event
+      parameters:
+      - description: Event
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      security:
+      - BearerAuth: []
+      tags:
+      - event
   /events/types:
     get:
       consumes:

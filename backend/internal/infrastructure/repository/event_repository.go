@@ -1,8 +1,12 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"github.com/robert-wl/backend/internal/domain/model"
+	"gorm.io/gorm"
+)
 
 type EventRepository interface {
+	Create(event *model.Event) error
 }
 
 type eventRepository struct {
@@ -13,4 +17,8 @@ func NewEventRepository(db *gorm.DB) EventRepository {
 	return &eventRepository{
 		db: db,
 	}
+}
+
+func (r *eventRepository) Create(event *model.Event) error {
+	return r.db.Create(event).Error
 }

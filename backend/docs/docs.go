@@ -87,6 +87,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/events": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create an event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "parameters": [
+                    {
+                        "description": "Event",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateEventRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/events/types": {
             "get": {
                 "security": [
@@ -125,6 +166,29 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CreateEventRequest": {
+            "type": "object",
+            "required": [
+                "location"
+            ],
+            "properties": {
+                "company_id": {
+                    "type": "string"
+                },
+                "dates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "event_type_id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.LogInRequest": {
             "type": "object",
             "required": [
