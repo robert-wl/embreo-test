@@ -8,6 +8,7 @@ import (
 
 type EventRepository interface {
 	Create(event *model.Event) error
+	FindBySecureID(secureID string) (*model.Event, error)
 	FindAllByCompany(companyID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error)
 	FindAllByVendor(vendorID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error)
 }
@@ -24,6 +25,24 @@ func NewEventRepository(db *gorm.DB) EventRepository {
 
 func (r *eventRepository) Create(event *model.Event) error {
 	return r.db.Create(event).Error
+}
+
+func (r *eventRepository) FindBySecureID(secureID string) (*model.Event, error) {
+	var event model.Event
+
+	err := r.db.
+		Where("secure_id = ?", secureID).
+		Preload("Company").
+		Preload("User").
+		Preload("EventType").
+		Preload("EventResponses").
+		First(&event).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &event, nil
 }
 
 func (r *eventRepository) FindAllByCompany(companyID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error) {

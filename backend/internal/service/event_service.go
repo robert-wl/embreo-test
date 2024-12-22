@@ -17,6 +17,7 @@ type EventService interface {
 	FindAll(user *model.User, dto *dto.GetEventRequest) ([]*model.Event, error)
 	FindAllByCompany(companyID string, dto *dto.GetEventRequest) ([]*model.Event, error)
 	FindAllByVendor(vendorID string, dto *dto.GetEventRequest) ([]*model.Event, error)
+	FindBySecureId(user *model.User, secureID string) (*model.Event, error)
 	FindAllType() ([]*model.EventType, error)
 }
 
@@ -24,13 +25,15 @@ type eventService struct {
 	eventRepo     repository.EventRepository
 	eventTypeRepo repository.EventTypeRepository
 	companyRepo   repository.CompanyRepository
+	vendorRepo    repository.VendorRepository
 }
 
-func NewEventService(er repository.EventRepository, etr repository.EventTypeRepository, cr repository.CompanyRepository) EventService {
+func NewEventService(er repository.EventRepository, etr repository.EventTypeRepository, cr repository.CompanyRepository, vr repository.VendorRepository) EventService {
 	return &eventService{
 		eventRepo:     er,
 		eventTypeRepo: etr,
 		companyRepo:   cr,
+		vendorRepo:    vr,
 	}
 }
 
@@ -163,6 +166,56 @@ func (s *eventService) FindAll(user *model.User, dto *dto.GetEventRequest) ([]*m
 	}
 
 	return res, nil
+}
+
+func (s *eventService) FindBySecureId(user *model.User, secureID string) (*model.Event, error) {
+	event, err := s.eventRepo.FindBySecureID(secureID)
+
+	if err != nil {
+		return nil, utils.NewAppError(
+			err,
+			http.StatusInternalServerError,
+			"failed to find event",
+		)
+	}
+
+	if user.Role == model.CompanyRole && user.Company.SecureID != event.Company.SecureID {
+		return nil, utils.NewAppError(
+			nil,
+			http.StatusForbidden,
+			"forbidden",
+		)
+	}
+
+	if user.Role == model.VendorRole {
+		vendors, err := s.vendorRepo.FindAllByEventType(event.EventType.SecureID)
+
+		if err != nil {
+			return nil, utils.NewAppError(
+				err,
+				http.StatusInternalServerError,
+				"failed to find vendors",
+			)
+		}
+
+		hasVendor := false
+		for _, vendor := range vendors {
+			if vendor.SecureID == user.Vendor.SecureID {
+				hasVendor = true
+				break
+			}
+		}
+
+		if !hasVendor {
+			return nil, utils.NewAppError(
+				nil,
+				http.StatusForbidden,
+				"forbidden",
+			)
+		}
+	}
+
+	return event, nil
 }
 
 func (s *eventService) FindAllType() ([]*model.EventType, error) {

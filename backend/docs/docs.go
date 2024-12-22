@@ -217,6 +217,48 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/events/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Find event by secure id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Secure ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Event"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -300,9 +342,6 @@ const docTemplate = `{
                 "company": {
                     "$ref": "#/definitions/model.Company"
                 },
-                "company_id": {
-                    "type": "integer"
-                },
                 "created_at": {
                     "type": "string"
                 },
@@ -313,11 +352,14 @@ const docTemplate = `{
                         "format": "date-time"
                     }
                 },
+                "event_responses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.EventResponse"
+                    }
+                },
                 "event_type": {
                     "$ref": "#/definitions/model.EventType"
-                },
-                "event_type_id": {
-                    "type": "integer"
                 },
                 "id": {
                     "type": "string"
@@ -325,14 +367,40 @@ const docTemplate = `{
                 "location": {
                     "type": "string"
                 },
+                "status": {
+                    "type": "string"
+                },
                 "updated_at": {
                     "type": "string"
                 },
                 "user": {
                     "$ref": "#/definitions/model.User"
+                }
+            }
+        },
+        "model.EventResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
                 },
-                "user_id": {
-                    "type": "integer"
+                "event": {
+                    "$ref": "#/definitions/model.Event"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "remarks": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "vendor": {
+                    "$ref": "#/definitions/model.Vendor"
                 }
             }
         },

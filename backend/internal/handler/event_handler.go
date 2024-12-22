@@ -80,6 +80,31 @@ func (h *EventHandler) FindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// FindBySecureID @Summary Find event by secure id
+// @Description Find event by secure id
+// @Tags event
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Secure ID"
+// @Success 200 {object} model.Event
+// @Failure 400 {object} utils.ErrorResponse
+// @Router /events/{id} [get]
+func (h *EventHandler) FindBySecureID(ctx *gin.Context) {
+	user := ctx.MustGet("user").(*model.User)
+
+	id := ctx.Param("id")
+
+	res, err := h.eventService.FindBySecureId(user, id)
+
+	if err != nil {
+		utils.SendError(ctx, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, res)
+}
+
 // FindAllType @Summary Find all event types
 // @Description Find all event types
 // @Tags event
