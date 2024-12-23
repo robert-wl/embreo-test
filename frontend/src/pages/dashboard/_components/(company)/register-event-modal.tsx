@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { CalendarPlus } from "lucide-react";
-import RegisterEventForm from "@/pages/dashboard/(company)/_components/register-event-form.tsx";
+import RegisterEventForm from "@/pages/dashboard/_components/(company)/register-event-form.tsx";
 import { useState } from "react";
 
 export default function RegisterEventModal() {

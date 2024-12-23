@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog.tsx";
-import { CalendarIcon, Clock, Info, MapPin, Tag, User, XCircle } from "lucide-react";
+import { CalendarIcon, Clock, Info, MapPin, Tag, User } from "lucide-react";
 import { EventEntity } from "@/lib/model/entity/event.entity.ts";
 import useAuth from "@/hooks/use-auth.ts";
 import { Role } from "@/lib/model/entity/user.entity.ts";
-import { Button } from "@/components/ui/button.tsx";
-import ApproveEventButton from "@/pages/dashboard/(vendor)/_components/approve-event-button.tsx";
+import ApproveEventButton from "@/pages/dashboard/_components/(vendor)/approve-event-button.tsx";
+import RejectEventButton from "@/pages/dashboard/_components/(vendor)/reject-event-button.tsx";
 
 interface Props {
   event: EventEntity;
@@ -98,12 +98,10 @@ export default function ViewEventModal({ event }: Props) {
 
         {user?.role === Role.VENDOR && event.status === "pending" && (
           <DialogFooter className="flex gap-2 pt-4 border-t border-gray-100">
-            <Button
-              variant="outline"
-              className="flex-1 border-red-200 hover:bg-red-50 text-red-600 hover:text-red-700 transition-colors">
-              <XCircle className="w-4 h-4 mr-2" />
-              Reject
-            </Button>
+            <RejectEventButton
+              event={event}
+              closeModal={() => setOpen(false)}
+            />
             <ApproveEventButton
               event={event}
               closeModal={() => setOpen(false)}

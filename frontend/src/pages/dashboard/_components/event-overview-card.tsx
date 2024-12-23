@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import EventTable from "@/pages/dashboard/_components/event-table.tsx";
 import { ComponentProps } from "react";
-import RegisterEventModal from "@/pages/dashboard/(company)/_components/register-event-modal.tsx";
+import RegisterEventModal from "@/pages/dashboard/_components/(company)/register-event-modal.tsx";
 import { getEvents } from "@/service/event-service.ts";
 import useAuth from "@/hooks/use-auth.ts";
 import { Role } from "@/lib/model/entity/user.entity.ts";
