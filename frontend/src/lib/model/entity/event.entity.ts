@@ -1,13 +1,15 @@
 import { CompanyEntity } from "@/lib/model/entity/company.entity.ts";
 import { EventTypeEntity } from "@/lib/model/entity/event-type.entity.ts";
 import { UserEntity } from "@/lib/model/entity/user.entity.ts";
+import { VendorEntity } from "@/lib/model/entity/vendor.entity.ts";
 
 export type EventEntity = {
   id: string;
   dates: string[];
   location: string;
   status: EventStatus;
-  accepted_at?: string;
+  approved_at?: string;
+  approved_vendor?: VendorEntity;
   created_at: string;
   updated_at: string;
 

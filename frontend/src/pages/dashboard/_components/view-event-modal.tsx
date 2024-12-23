@@ -63,12 +63,12 @@ export default function ViewEventModal({ event }: Props) {
             </div>
           </div>
 
-          {event.accepted_at ? (
+          {event.approved_at ? (
             <div className="flex items-start space-x-3 p-3 rounded-lg border border-input bg-gray-50">
               <CalendarIcon className="w-5 h-5 text-gray-500 mt-0.5" />
               <div className="flex-1">
                 <p className="text-sm font-medium text-gray-600">Accepted Date</p>
-                <div className="mt-1 font-semibold text-gray-900">{new Date(event.accepted_at).toLocaleDateString()}</div>
+                <div className="mt-1 font-semibold text-gray-900">{new Date(event.approved_at).toLocaleDateString()}</div>
               </div>
             </div>
           ) : (
