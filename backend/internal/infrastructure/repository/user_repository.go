@@ -2,19 +2,15 @@ package repository
 
 import (
 	"github.com/robert-wl/backend/internal/domain/model"
+	"github.com/robert-wl/backend/internal/domain/repository"
 	"gorm.io/gorm"
 )
-
-type UserRepository interface {
-	FindBySecureID(secureID string) (*model.User, error)
-	FindByUsername(email string) (*model.User, error)
-}
 
 type userRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) UserRepository {
+func NewUserRepository(db *gorm.DB) repository.UserRepository {
 	return &userRepository{
 		db: db,
 	}

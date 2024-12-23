@@ -2,18 +2,15 @@ package repository
 
 import (
 	"github.com/robert-wl/backend/internal/domain/model"
+	"github.com/robert-wl/backend/internal/domain/repository"
 	"gorm.io/gorm"
 )
-
-type EventResponseRepository interface {
-	Create(eventResponse *model.EventResponse) error
-}
 
 type eventResponseRepository struct {
 	db *gorm.DB
 }
 
-func NewEventResponseRepository(db *gorm.DB) EventResponseRepository {
+func NewEventResponseRepository(db *gorm.DB) repository.EventResponseRepository {
 	return &eventResponseRepository{
 		db: db,
 	}

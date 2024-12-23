@@ -2,23 +2,16 @@ package repository
 
 import (
 	"github.com/robert-wl/backend/internal/domain/model"
+	"github.com/robert-wl/backend/internal/domain/repository"
 	"github.com/robert-wl/backend/pkg/pagination"
 	"gorm.io/gorm"
 )
-
-type EventRepository interface {
-	Create(event *model.Event) error
-	Update(event *model.Event) error
-	FindBySecureID(secureID string) (*model.Event, error)
-	FindAllByCompany(companyID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error)
-	FindAllByVendor(vendorID string, search *string, pagination *pagination.Pagination) ([]*model.Event, error)
-}
 
 type eventRepository struct {
 	db *gorm.DB
 }
 
-func NewEventRepository(db *gorm.DB) EventRepository {
+func NewEventRepository(db *gorm.DB) repository.EventRepository {
 	return &eventRepository{
 		db: db,
 	}

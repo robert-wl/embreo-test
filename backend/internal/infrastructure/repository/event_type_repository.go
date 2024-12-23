@@ -2,19 +2,15 @@ package repository
 
 import (
 	"github.com/robert-wl/backend/internal/domain/model"
+	"github.com/robert-wl/backend/internal/domain/repository"
 	"gorm.io/gorm"
 )
-
-type EventTypeRepository interface {
-	FindAll() ([]*model.EventType, error)
-	FindBySecureID(secureID string) (*model.EventType, error)
-}
 
 type eventTypeRepository struct {
 	db *gorm.DB
 }
 
-func NewEventTypeRepository(db *gorm.DB) EventTypeRepository {
+func NewEventTypeRepository(db *gorm.DB) repository.EventTypeRepository {
 	return &eventTypeRepository{
 		db: db,
 	}

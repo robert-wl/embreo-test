@@ -2,18 +2,15 @@ package repository
 
 import (
 	"github.com/robert-wl/backend/internal/domain/model"
+	"github.com/robert-wl/backend/internal/domain/repository"
 	"gorm.io/gorm"
 )
-
-type CompanyRepository interface {
-	FindBySecureID(secureID string) (*model.Company, error)
-}
 
 type companyRepository struct {
 	db *gorm.DB
 }
 
-func NewCompanyRepository(db *gorm.DB) CompanyRepository {
+func NewCompanyRepository(db *gorm.DB) repository.CompanyRepository {
 	return &companyRepository{
 		db: db,
 	}

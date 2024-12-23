@@ -5,11 +5,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type VendorRepository interface {
-	FindAllByEvent(eventID string) ([]*model.Vendor, error)
-	FindAllByEventType(eventTypeID string) ([]*model.Vendor, error)
-}
-
 type vendorRepository struct {
 	db *gorm.DB
 }
