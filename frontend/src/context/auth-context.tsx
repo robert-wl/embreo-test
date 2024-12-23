@@ -23,7 +23,7 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: Props) {
-  const [user, setUser] = useLocalStorage<Nullable<UserEntity>>(constant.USER_KEY, null);
+  const [user, setUser] = useLocalStorage<Maybe<UserEntity>>(constant.USER_KEY, null);
   const [token, setToken] = useLocalStorage<Nullable<string>>(constant.TOKEN_KEY, null);
   const { data, refetch } = getCurrentUser({
     enabled: !!token,
@@ -51,7 +51,7 @@ export function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     if (token) {
-      refetch();
+      refetch().then(({ data }) => setUser(data));
     }
   }, [token]);
 

@@ -22,10 +22,11 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
   };
 
   useEffect(() => {
+    console.log(user);
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user]);
 
   return (
     <div
