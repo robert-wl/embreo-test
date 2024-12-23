@@ -8,7 +8,7 @@ import { getEvents } from "@/service/event-service.ts";
 import EventStatsSection from "@/pages/dashboard/_components/event-stats-section.tsx";
 
 export default function DashboardPage() {
-  const { data } = getEvents({});
+  const { data } = getEvents();
   const { user } = useAuth();
 
   return (

@@ -82,10 +82,12 @@ export function useCreateEvent(options?: MutationParams<void, CreateEventDTO>) {
       }
     },
     ...options,
-    onSuccess: () =>
+    onSuccess: (d, v, c) => {
+      options?.onSuccess?.(d, v, c);
       queryClient.invalidateQueries({
         queryKey: ["events"],
-      }),
+      });
+    },
   });
 }
 
