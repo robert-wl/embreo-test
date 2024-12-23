@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/robert-wl/backend/internal/domain/model"
+	"github.com/robert-wl/backend/internal/domain/repository"
 	"gorm.io/gorm"
 )
 
@@ -9,7 +10,7 @@ type vendorRepository struct {
 	db *gorm.DB
 }
 
-func NewVendorRepository(db *gorm.DB) VendorRepository {
+func NewVendorRepository(db *gorm.DB) repository.VendorRepository {
 	return &vendorRepository{
 		db: db,
 	}
