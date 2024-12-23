@@ -7,6 +7,7 @@ export type EventEntity = {
   dates: string[];
   location: string;
   status: EventStatus;
+  accepted_at?: string;
   created_at: string;
   updated_at: string;
 
