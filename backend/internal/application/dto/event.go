@@ -13,8 +13,9 @@ type CreateEventRequest struct {
 }
 
 type SetStatusRequest struct {
-	Status  model.ResponseStatus `json:"status" binding:"required"`
-	Remarks *string              `json:"remarks,omitempty"`
+	Status     model.ResponseStatus `json:"status" binding:"required"`
+	ApprovedAt *string              `json:"approved_at,omitempty"`
+	Remarks    *string              `json:"remarks,omitempty"`
 }
 type GetEventRequest struct {
 	*pagination.Pagination

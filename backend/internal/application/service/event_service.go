@@ -339,6 +339,18 @@ func (s *eventService) SetStatus(user *model.User, secureID string, dto *dto.Set
 	if res.Status == model.ResponseApproved {
 		event.Status = model.EventApproved
 
+		date, err := time.Parse(time.RFC3339, *dto.ApprovedAt)
+
+		if err != nil {
+			return utils.NewAppError(
+				err,
+				http.StatusBadRequest,
+				"invalid date format",
+			)
+		}
+
+		event.ApprovedAt = &date
+
 		err = s.eventRepo.Update(event)
 
 		if err != nil {
