@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/robert-wl/backend/internal/infrastructure/db"
-	"github.com/robert-wl/backend/internal/router"
+	"github.com/robert-wl/backend/internal/infrastructure/http/router"
 )
 
 // @title Embreo Backend API

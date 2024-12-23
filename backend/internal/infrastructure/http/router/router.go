@@ -6,7 +6,7 @@ import (
 	"github.com/robert-wl/backend/docs"
 	service2 "github.com/robert-wl/backend/internal/application/service"
 	"github.com/robert-wl/backend/internal/handler"
-	"github.com/robert-wl/backend/internal/handler/middleware"
+	"github.com/robert-wl/backend/internal/infrastructure/http/middleware"
 	"github.com/robert-wl/backend/internal/infrastructure/repository"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
