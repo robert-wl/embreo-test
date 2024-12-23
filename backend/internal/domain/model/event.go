@@ -17,7 +17,7 @@ type Event struct {
 	UpdatedAt  time.Time      `json:"updated_at" gorm:"autoUpdateTime;not null"`
 
 	Status         EventStatus `json:"status" gorm:"-"`
-	ApprovedVendor Vendor      `json:"approved_vendor" gorm:"-"`
+	ApprovedVendor Vendor      `json:"approved_vendor,omitempty" gorm:"-"`
 
 	CompanyID   uint       `json:"-" gorm:"not null"`
 	Company     *Company   `json:"company,omitempty" gorm:"foreignKey:CompanyID"`

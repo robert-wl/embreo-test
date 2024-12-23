@@ -149,6 +149,7 @@ func (s *eventService) findAllAsVendor(vendorID string, dto *dto.GetEventRequest
 		for _, response := range event.EventResponses {
 			if response.Vendor.SecureID == vendorID {
 				event.Status = model.EventStatus(response.Status)
+				event.ApprovedVendor = response.Vendor
 				break
 			}
 		}
