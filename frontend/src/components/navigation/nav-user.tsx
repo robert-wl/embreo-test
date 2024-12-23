@@ -2,7 +2,6 @@
 
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar.tsx";
 import useAuth from "@/hooks/use-auth.ts";
 import { useNavigate } from "react-router";
+import TextAvatar from "@/components/text-avatar.tsx";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -24,7 +24,6 @@ export function NavUser() {
     logout();
     navigate("/auth");
   };
-  const avatarText = (name?: string) => name?.charAt(0).toUpperCase() ?? "X";
 
   return (
     <SidebarMenu>
@@ -34,9 +33,7 @@ export function NavUser() {
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent text-white">
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="rounded-lg text-black">{avatarText(user?.username)}</AvatarFallback>
-              </Avatar>
+              <TextAvatar text={user?.username} />
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user?.username}</span>
               </div>
@@ -50,9 +47,7 @@ export function NavUser() {
             sideOffset={4}>
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarFallback className="rounded-lg">{avatarText(user?.username)}</AvatarFallback>
-                </Avatar>
+                <TextAvatar text={user?.username} />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user?.username}</span>
                 </div>
