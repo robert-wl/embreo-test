@@ -3,22 +3,15 @@ package service
 import (
 	"fmt"
 	"github.com/lib/pq"
+	"github.com/robert-wl/backend/internal/application/dto"
 	"github.com/robert-wl/backend/internal/domain/model"
-	"github.com/robert-wl/backend/internal/dto"
-	"github.com/robert-wl/backend/internal/infrastructure/repository"
+	"github.com/robert-wl/backend/internal/domain/repository"
+	"github.com/robert-wl/backend/internal/domain/service"
 	"github.com/robert-wl/backend/pkg/pagination"
 	"github.com/robert-wl/backend/pkg/utils"
 	"net/http"
 	"time"
 )
-
-type EventService interface {
-	CreateEvent(user *model.User, dto *dto.CreateEventRequest) error
-	FindAll(user *model.User, dto *dto.GetEventRequest) ([]*model.Event, error)
-	FindBySecureId(user *model.User, secureID string) (*model.Event, error)
-	FindAllType() ([]*model.EventType, error)
-	SetStatus(user *model.User, secureID string, dto *dto.SetStatusRequest) error
-}
 
 type eventService struct {
 	eventRepo         repository.EventRepository
@@ -34,7 +27,7 @@ func NewEventService(
 	err repository.EventResponseRepository,
 	cr repository.CompanyRepository,
 	vr repository.VendorRepository,
-) EventService {
+) service.EventService {
 	return &eventService{
 		eventRepo:         er,
 		eventTypeRepo:     etr,

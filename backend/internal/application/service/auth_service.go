@@ -2,21 +2,18 @@ package service
 
 import (
 	"fmt"
-	"github.com/robert-wl/backend/internal/dto"
-	"github.com/robert-wl/backend/internal/infrastructure/repository"
+	"github.com/robert-wl/backend/internal/application/dto"
+	"github.com/robert-wl/backend/internal/domain/repository"
+	"github.com/robert-wl/backend/internal/domain/service"
 	"github.com/robert-wl/backend/pkg/utils"
 	"net/http"
 )
-
-type AuthService interface {
-	LogIn(dto *dto.LogInRequest) (*string, error)
-}
 
 type authService struct {
 	repo repository.UserRepository
 }
 
-func NewAuthService(r repository.UserRepository) AuthService {
+func NewAuthService(r repository.UserRepository) service.AuthService {
 	return &authService{
 		repo: r,
 	}

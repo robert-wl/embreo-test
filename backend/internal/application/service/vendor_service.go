@@ -2,18 +2,15 @@ package service
 
 import (
 	"github.com/robert-wl/backend/internal/domain/model"
-	"github.com/robert-wl/backend/internal/infrastructure/repository"
+	"github.com/robert-wl/backend/internal/domain/repository"
+	"github.com/robert-wl/backend/internal/domain/service"
 )
-
-type VendorService interface {
-	FindAllByEvent(eventTypeID string) ([]*model.Vendor, error)
-}
 
 type vendorService struct {
 	vendorRepo repository.VendorRepository
 }
 
-func NewVendorService(vr repository.VendorRepository) VendorService {
+func NewVendorService(vr repository.VendorRepository) service.VendorService {
 	return &vendorService{
 		vendorRepo: vr,
 	}

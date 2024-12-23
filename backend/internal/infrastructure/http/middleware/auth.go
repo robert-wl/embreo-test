@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/robert-wl/backend/internal/infrastructure/repository"
+	"github.com/robert-wl/backend/internal/domain/repository"
 	"github.com/robert-wl/backend/pkg/utils"
 	"net/http"
 	"strings"
