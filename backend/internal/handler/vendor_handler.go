@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/robert-wl/backend/internal/service"
+	"github.com/robert-wl/backend/internal/application/service"
 	"github.com/robert-wl/backend/pkg/utils"
 	"net/http"
 )

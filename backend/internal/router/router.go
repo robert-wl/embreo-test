@@ -4,10 +4,10 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/robert-wl/backend/docs"
+	service2 "github.com/robert-wl/backend/internal/application/service"
 	"github.com/robert-wl/backend/internal/handler"
 	"github.com/robert-wl/backend/internal/handler/middleware"
 	"github.com/robert-wl/backend/internal/infrastructure/repository"
-	"github.com/robert-wl/backend/internal/service"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
@@ -23,9 +23,9 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	companyRepo := repository.NewCompanyRepository(db)
 	vendorRepo := repository.NewVendorRepository(db)
 
-	authService := service.NewAuthService(userRepo)
-	eventService := service.NewEventService(eventRepo, eventTypeRepo, eventResponseRepo, companyRepo, vendorRepo)
-	vendorService := service.NewVendorService(vendorRepo)
+	authService := service2.NewAuthService(userRepo)
+	eventService := service2.NewEventService(eventRepo, eventTypeRepo, eventResponseRepo, companyRepo, vendorRepo)
+	vendorService := service2.NewVendorService(vendorRepo)
 
 	authHandler := handler.NewAuthHandler(authService)
 	eventHandler := handler.NewEventHandler(eventService)
