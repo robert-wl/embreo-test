@@ -42,7 +42,7 @@ const activities = [
 
 export default function RecentActivityCard() {
   return (
-    <Card className="transform transition-all">
+    <Card className="transform transition-all h-fit">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>

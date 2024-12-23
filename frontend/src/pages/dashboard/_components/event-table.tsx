@@ -1,5 +1,14 @@
 import GenericTable from "@/components/table/generic-table.tsx";
-import { ColumnDef, ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
 import { EventEntity, EventStatus } from "@/lib/model/entity/event.entity.ts";
 import { useMemo, useState } from "react";
 import { CalendarIcon, CheckIcon, MapPinIcon } from "lucide-react";
@@ -7,6 +16,7 @@ import ViewEventModal from "@/pages/dashboard/_components/view-event-modal.tsx";
 import EventBadge from "@/components/event/event-badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { getTableHeader } from "@/components/table/sortable-cell.tsx";
 
 interface TableContent {
   event: EventEntity;
@@ -15,23 +25,27 @@ interface TableContent {
   dates: string[];
   location: string;
   status: string;
+  createdBy: string;
   createdDate: string;
 }
 
 const tableColumns: ColumnDef<TableContent>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: getTableHeader("Name"),
+    enableSorting: true,
     cell: ({ row }) => <div className="font-medium">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "vendor",
-    header: "Vendor",
+    header: getTableHeader("Vendor"),
+    enableSorting: true,
     cell: ({ row }) => <div className="text-sm text-gray-600">{row.getValue("vendor")}</div>,
   },
   {
     accessorKey: "dates",
-    header: "Dates",
+    header: getTableHeader("Dates"),
+    enableSorting: true,
     cell: ({ row }) => {
       const dates: string[] = row.getValue("dates");
 
@@ -51,7 +65,8 @@ const tableColumns: ColumnDef<TableContent>[] = [
   },
   {
     accessorKey: "location",
-    header: "Location",
+    header: getTableHeader("Location"),
+    enableSorting: true,
     cell: ({ row }) => (
       <div className="flex items-center text-sm text-gray-600">
         <MapPinIcon className="mr-2 h-4 w-4" />
@@ -61,7 +76,8 @@ const tableColumns: ColumnDef<TableContent>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: getTableHeader("Status"),
+    enableSorting: true,
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
 
@@ -70,8 +86,13 @@ const tableColumns: ColumnDef<TableContent>[] = [
   },
   {
     accessorKey: "createdDate",
-    header: "Created Date",
+    header: getTableHeader("Created Date"),
     cell: ({ row }) => <div className="text-sm text-gray-600">{row.getValue("createdDate")}</div>,
+  },
+  {
+    accessorKey: "createdBy",
+    header: getTableHeader("Created By"),
+    cell: ({ row }) => <div className="text-sm text-gray-600">{row.getValue("createdBy")}</div>,
   },
   {
     header: "Actions",
@@ -88,6 +109,7 @@ interface Props {
 }
 
 export default function EventTable({ data }: Props) {
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const tableData = useMemo<TableContent[]>(
     () =>
@@ -105,6 +127,7 @@ export default function EventTable({ data }: Props) {
           dates: dates,
           location: event.location,
           status: event.status,
+          createdBy: event.user?.username ?? "N/A",
           createdDate: new Date(event.created_at).toLocaleDateString(),
         };
       }),
@@ -114,11 +137,14 @@ export default function EventTable({ data }: Props) {
   const table = useReactTable({
     data: tableData,
     columns: tableColumns,
+    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     state: {
+      sorting,
       columnFilters,
     },
   });
