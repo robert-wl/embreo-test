@@ -109,6 +109,17 @@ func (s *eventService) findAllAsCompany(companyID string, dto *dto.GetEventReque
 
 	res, err := s.eventRepo.FindAllByCompany(companyID, dto.Search, dto.Pagination)
 
+	for _, event := range res {
+		event.Status = model.EventPending
+
+		for _, response := range event.EventResponses {
+			if response.Status == model.ResponseApproved {
+				event.Status = model.EventStatus(response.Status)
+				break
+			}
+		}
+	}
+
 	if err != nil {
 		return nil, utils.NewAppError(
 			err,
@@ -150,7 +161,7 @@ func (s *eventService) findAllAsVendor(vendorID string, dto *dto.GetEventRequest
 		)
 	}
 
-	return res, nil
+	return resultEvents, nil
 }
 
 func (s *eventService) FindAll(user *model.User, dto *dto.GetEventRequest) ([]*model.Event, error) {
