@@ -145,11 +145,19 @@ func (h *EventHandler) FindBySecureID(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
+// @Param vendor_id query string false "Vendor ID"
 // @Success 200 {array} model.EventType
 // @Failure 400 {object} utils.ErrorResponse
-// @Router /events/types [get]
+// @Router /event/types [get]
 func (h *EventHandler) FindAllType(ctx *gin.Context) {
-	res, err := h.eventService.FindAllType()
+	var req dto.GetEventTypeRequest
+
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		utils.SendError(ctx, err)
+		return
+	}
+
+	res, err := h.eventService.FindAllType(&req)
 
 	if err != nil {
 		utils.SendError(ctx, err)

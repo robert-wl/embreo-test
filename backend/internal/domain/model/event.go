@@ -12,10 +12,12 @@ type Event struct {
 	SecureID   string         `json:"id" gorm:"type:char(36);uniqueIndex;not null"`
 	Dates      pq.StringArray `json:"dates" gorm:"type:timestamp[];not null" swaggertype:"array,string" format:"date-time"`
 	Location   string         `json:"location" gorm:"not null"`
-	Status     EventStatus    `json:"status" gorm:"-"`
 	AcceptedAt *time.Time     `json:"accepted_at" gorm:"default:null"`
 	CreatedAt  time.Time      `json:"created_at" gorm:"autoCreateTime;not null"`
 	UpdatedAt  time.Time      `json:"updated_at" gorm:"autoUpdateTime;not null"`
+
+	Status         EventStatus `json:"status" gorm:"-"`
+	ApprovedVendor Vendor      `json:"approved_vendor" gorm:"-"`
 
 	CompanyID   uint       `json:"-" gorm:"not null"`
 	Company     *Company   `json:"company,omitempty" gorm:"foreignKey:CompanyID"`

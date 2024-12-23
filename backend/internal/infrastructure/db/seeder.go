@@ -1,11 +1,13 @@
 package db
 
 import (
+	"fmt"
 	"github.com/go-faker/faker/v4"
 	"github.com/robert-wl/backend/internal/domain/model"
 	"github.com/robert-wl/backend/pkg/utils"
 	"gorm.io/gorm"
 	"math/rand"
+	"strings"
 )
 
 type Seeder interface {
@@ -58,6 +60,24 @@ func (s *seeder) Seed() error {
 	return nil
 }
 
+var eventSelection = []string{
+	"Conference",
+	"Seminar",
+	"Meeting",
+	"Workshop",
+	"Trade Show",
+	"Networking",
+	"Charity Event",
+	"Product Launch",
+	"Team Building",
+	"Training",
+	"Webinar",
+	"Virtual Event",
+	"Hybrid Event",
+	"Exhibition",
+	"Expo",
+}
+
 func (s *seeder) SeedEventType() error {
 	if count, err := s.checkModelCount(&model.EventType{}); count > 0 || err != nil {
 		return err
@@ -66,7 +86,7 @@ func (s *seeder) SeedEventType() error {
 	count := rand.Intn(10) + 5
 	for i := 0; i < count; i++ {
 		eventType := model.EventType{
-			Name: faker.Name(),
+			Name: eventSelection[i],
 		}
 		if err := s.db.Create(&eventType).Error; err != nil {
 			return err
@@ -76,6 +96,8 @@ func (s *seeder) SeedEventType() error {
 	return nil
 }
 
+var companyLetter = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
 func (s *seeder) SeedCompany() error {
 	if count, err := s.checkModelCount(&model.Company{}); count > 0 || err != nil {
 		return err
@@ -84,7 +106,7 @@ func (s *seeder) SeedCompany() error {
 	count := rand.Intn(10) + 5
 	for i := 0; i < count; i++ {
 		company := model.Company{
-			Name: faker.Name(),
+			Name: fmt.Sprintf("Company %s", string(companyLetter[i])),
 		}
 		if err := s.db.Create(&company).Error; err != nil {
 			return err
@@ -93,6 +115,8 @@ func (s *seeder) SeedCompany() error {
 
 	return nil
 }
+
+var vendorLetter = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func (s *seeder) SeedVendor() error {
 	if count, err := s.checkModelCount(&model.Vendor{}); count > 0 || err != nil {
@@ -105,7 +129,7 @@ func (s *seeder) SeedVendor() error {
 	}
 
 	if len(eventTypes) == 0 {
-		return nil // No event types to assign
+		return nil
 	}
 
 	count := rand.Intn(10) + 5
@@ -115,7 +139,7 @@ func (s *seeder) SeedVendor() error {
 		selectedEventTypes := eventTypes[:typeAmount]
 
 		vendor := model.Vendor{
-			Name:       faker.Name(),
+			Name:       fmt.Sprintf("Vendor %s", string(vendorLetter[i])),
 			EventTypes: selectedEventTypes,
 		}
 		if err := s.db.Create(&vendor).Error; err != nil {
@@ -142,14 +166,14 @@ func (s *seeder) SeedUser() error {
 	}
 
 	if len(companies) == 0 && len(vendors) == 0 {
-		return nil // No companies or vendors to assign users
+		return nil
 	}
 
 	count := rand.Intn(10) + 5
 	roles := []model.Role{model.CompanyRole, model.VendorRole}
 
 	for i := 0; i < count; i++ {
-		username := faker.Username()
+		username := strings.ReplaceAll(faker.Name(), " ", "-")
 		password, err := utils.Encrypt(username)
 		if err != nil {
 			return err

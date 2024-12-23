@@ -115,6 +115,7 @@ func (s *eventService) findAllAsCompany(companyID string, dto *dto.GetEventReque
 		for _, response := range event.EventResponses {
 			if response.Status == model.ResponseApproved {
 				event.Status = model.EventStatus(response.Status)
+				event.ApprovedVendor = response.Vendor
 				break
 			}
 		}
@@ -232,8 +233,22 @@ func (s *eventService) FindBySecureId(user *model.User, secureID string) (*model
 	return event, nil
 }
 
-func (s *eventService) FindAllType() ([]*model.EventType, error) {
-	res, err := s.eventTypeRepo.FindAll()
+func (s *eventService) FindAllType(dto *dto.GetEventTypeRequest) ([]*model.EventType, error) {
+	if dto.VendorID == nil {
+		res, err := s.eventTypeRepo.FindAll()
+
+		if err != nil {
+			return nil, utils.NewAppError(
+				err,
+				http.StatusInternalServerError,
+				"failed to find event types",
+			)
+		}
+
+		return res, nil
+	}
+
+	res, err := s.eventTypeRepo.FindAllByVendorID(*dto.VendorID)
 
 	if err != nil {
 		return nil, utils.NewAppError(

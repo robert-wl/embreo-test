@@ -20,3 +20,7 @@ type GetEventRequest struct {
 	*pagination.Pagination
 	Search *string `form:"search,omitempty" binding:"omitempty"`
 }
+
+type GetEventTypeRequest struct {
+	VendorID *string `form:"vendor_id,omitempty" binding:"omitempty"`
+}
