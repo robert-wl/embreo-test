@@ -6,7 +6,7 @@ import (
 
 type Pagination struct {
 	Page  *int `form:"page,omitempty" binding:"omitempty,min=1"`
-	Limit *int `form:"limit,omitempty" binding:"omitempty,min=1,max=50"`
+	Limit *int `form:"limit,omitempty" binding:"omitempty,min=1,max=99999"`
 }
 
 func (p *Pagination) Paginate() func(db *gorm.DB) *gorm.DB {
@@ -25,11 +25,11 @@ func (p *Pagination) GetPage() int {
 
 func (p *Pagination) GetLimit() int {
 	if p.Limit == nil || *p.Limit < 1 {
-		return 5
+		return 99999
 	}
 
-	if *p.Limit > 50 {
-		return 50
+	if *p.Limit > 99999 {
+		return 99999
 	}
 
 	return *p.Limit
