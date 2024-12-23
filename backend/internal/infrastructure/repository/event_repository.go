@@ -56,6 +56,7 @@ func (r *eventRepository) FindAllByCompany(companyID string, search *string, pag
 	}
 
 	err := query.
+		Preload("User").
 		Preload("EventType").
 		Preload("EventResponses").
 		Preload("EventResponses.Vendor").
@@ -83,6 +84,7 @@ func (r *eventRepository) FindAllByVendor(vendorID string, search *string, pagin
 	}
 
 	err := query.
+		Preload("User").
 		Preload("EventType").
 		Preload("EventResponses").
 		Preload("EventResponses.Vendor").
