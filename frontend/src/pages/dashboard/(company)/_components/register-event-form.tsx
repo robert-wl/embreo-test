@@ -108,6 +108,7 @@ export default function RegisterEventForm({ setModalOpen }: Props) {
               />
             ))}
           </div>
+          <ErrorField error={errors.dates?.root?.message} />
         </div>
         <DialogFooter>
           <DialogClose asChild>
