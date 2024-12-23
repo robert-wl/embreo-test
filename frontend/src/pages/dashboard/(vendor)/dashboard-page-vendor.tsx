@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import useAuth from "@/hooks/use-auth.ts";
 import EventOverviewCard from "@/pages/dashboard/_components/event-overview-card.tsx";
+import RecentActivityCard from "@/components/dashboard/recent-activity-card.tsx";
 
 export default function DashboardPageVendor() {
   const { user } = useAuth();
@@ -76,6 +77,7 @@ export default function DashboardPageVendor() {
           </CardContent>
         </Card>
 
+        <RecentActivityCard />
         <EventOverviewCard />
       </div>
       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted md:min-h-min" />
