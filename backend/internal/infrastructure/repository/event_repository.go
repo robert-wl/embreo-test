@@ -85,6 +85,7 @@ func (r *eventRepository) FindAllByVendor(vendorID string, search *string, pagin
 
 	err := query.
 		Preload("User").
+		Preload("Company").
 		Preload("EventType").
 		Preload("EventResponses").
 		Preload("EventResponses.Vendor").
