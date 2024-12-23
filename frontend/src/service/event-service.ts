@@ -1,6 +1,6 @@
 import { MutationParams, QueryParams } from "@/lib/type/service.ts";
 import { EventTypeEntity } from "@/lib/model/entity/event-type.entity.ts";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api/fetch.ts";
 import { CreateEventDTO } from "@/lib/model/schema/event/create-event.dto.ts";
 import { LoginResponse } from "@/lib/model/response/auth/login.response.ts";
@@ -29,7 +29,7 @@ interface GetEventsParams {
   limit?: number;
 }
 
-export function getEvents(params: GetEventsParams, options?: QueryParams<EventEntity[]>) {
+export function getEvents(params?: GetEventsParams, options?: QueryParams<EventEntity[]>) {
   return useQuery({
     queryKey: ["events"],
     queryFn: async () => {
@@ -72,6 +72,7 @@ export function getEventById(id: string, options?: QueryParams<EventEntity>) {
 }
 
 export function useCreateEvent(options?: MutationParams<void, CreateEventDTO>) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (body: CreateEventDTO) => {
       const [_, error] = await api.post<LoginResponse>("/api/v1/events", body);
@@ -81,10 +82,15 @@ export function useCreateEvent(options?: MutationParams<void, CreateEventDTO>) {
       }
     },
     ...options,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["events"],
+      }),
   });
 }
 
 export function useChangeStatus(id: string, options?: MutationParams<void, ChangeStatusDTO>) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (body) => {
       const [_, error] = await api.post<void>(`/api/v1/events/${id}/status`, body);
@@ -94,5 +100,9 @@ export function useChangeStatus(id: string, options?: MutationParams<void, Chang
       }
     },
     ...options,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["events"],
+      }),
   });
 }

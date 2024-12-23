@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api/fetch.ts";
 import { UserEntity } from "@/lib/model/entity/user.entity.ts";
 import { MutationParams, QueryParams } from "@/lib/type/service.ts";
@@ -22,6 +22,7 @@ export function getCurrentUser(options?: QueryParams<UserEntity>) {
 }
 
 export function useLogin(options?: MutationParams<LoginResponse, LoginDTO>) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (body: LoginDTO) => {
       const [data, error] = await api.post<LoginResponse>("/api/v1/auth/login", body);
@@ -33,5 +34,11 @@ export function useLogin(options?: MutationParams<LoginResponse, LoginDTO>) {
       return data;
     },
     ...options,
+    onSuccess: (data, v, c) => {
+      options?.onSuccess?.(data, v, c);
+      queryClient.invalidateQueries({
+        queryKey: ["current-user"],
+      });
+    },
   });
 }
