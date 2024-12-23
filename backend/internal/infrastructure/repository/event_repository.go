@@ -60,6 +60,9 @@ func (r *eventRepository) FindAllByCompany(companyID string, search *string, pag
 		Preload("EventType").
 		Preload("EventResponses").
 		Preload("EventResponses.Vendor").
+		Order("events.created_at desc").
+		Order("events.approved_at desc").
+		Order("").
 		Find(&events).Error
 
 	if err != nil {
@@ -89,6 +92,8 @@ func (r *eventRepository) FindAllByVendor(vendorID string, search *string, pagin
 		Preload("EventType").
 		Preload("EventResponses").
 		Preload("EventResponses.Vendor").
+		Order("events.created_at desc").
+		Order("events.approved_at desc").
 		Find(&events).Error
 
 	if err != nil {
