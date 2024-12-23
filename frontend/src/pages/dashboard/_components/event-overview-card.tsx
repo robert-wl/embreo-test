@@ -2,16 +2,19 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import EventTable from "@/pages/dashboard/_components/event-table.tsx";
 import { ComponentProps } from "react";
 import RegisterEventModal from "@/pages/dashboard/_components/(company)/register-event-modal.tsx";
-import { getEvents } from "@/service/event-service.ts";
 import useAuth from "@/hooks/use-auth.ts";
 import { Role } from "@/lib/model/entity/user.entity.ts";
+import { EventEntity } from "@/lib/model/entity/event.entity.ts";
 
-export default function EventOverviewCard({ ...props }: ComponentProps<typeof Card>) {
+interface Props extends ComponentProps<typeof Card> {
+  data: EventEntity[];
+}
+
+export default function EventOverviewCard({ data, ...props }: Props) {
   const { user } = useAuth();
-  const { data } = getEvents({});
   return (
     <Card
-      className="transform transition-all col-span-3"
+      className="transform transition-all col-span-2"
       {...props}>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
