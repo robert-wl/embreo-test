@@ -16,6 +16,7 @@ type Seeder interface {
 	SeedCompany() error
 	SeedVendor() error
 	SeedUser() error
+	SeedEvent() error
 }
 
 type seeder struct {
@@ -44,18 +45,27 @@ func (s *seeder) Seed() error {
 	if err := s.SeedEventType(); err != nil {
 		return err
 	}
+	fmt.Println("Seeded event types")
 
 	if err := s.SeedCompany(); err != nil {
 		return err
 	}
+	fmt.Println("Seeded companies")
 
 	if err := s.SeedVendor(); err != nil {
 		return err
 	}
+	fmt.Println("Seeded vendors")
 
 	if err := s.SeedUser(); err != nil {
 		return err
 	}
+	fmt.Println("Seeded users")
+
+	if err := s.SeedEvent(); err != nil {
+		return err
+	}
+	fmt.Println("Seeded events")
 
 	return nil
 }
@@ -201,6 +211,53 @@ func (s *seeder) SeedUser() error {
 
 		if err := s.db.Create(&user).Error; err != nil {
 			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *seeder) SeedEvent() error {
+	if count, err := s.checkModelCount(&model.Event{}); count > 0 || err != nil {
+		return err
+	}
+
+	var companies []model.Company
+	if err := s.db.Find(&companies).Error; err != nil {
+		return err
+	}
+
+	var eventTypes []model.EventType
+	if err := s.db.Find(&eventTypes).Error; err != nil {
+		return err
+	}
+
+	var users []model.User
+	if err := s.db.Find(&users).Error; err != nil {
+		return err
+	}
+
+	if len(companies) == 0 && len(eventTypes) == 0 && len(users) == 0 {
+		return nil
+	}
+
+	for _, company := range companies {
+		count := rand.Intn(10) + 5
+		for i := 0; i < count; i++ {
+			randomEventType := eventTypes[rand.Intn(len(eventTypes))]
+			randomUser := users[rand.Intn(len(users))]
+
+			event := model.Event{
+				Dates:     []string{faker.Date(), faker.Date(), faker.Date()},
+				Location:  faker.Timezone(),
+				Company:   &company,
+				EventType: &randomEventType,
+				User:      &randomUser,
+			}
+
+			if err := s.db.Create(&event).Error; err != nil {
+				return err
+			}
 		}
 	}
 
