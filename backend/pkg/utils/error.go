@@ -84,6 +84,10 @@ func formatValidationErrors(validationErrors validator.ValidationErrors) []strin
 func SendError(ctx *gin.Context, err error) {
 	var appErr *AppError
 	if errors.As(err, &appErr) {
+		if appErr.Err != nil {
+			log.Println(appErr.Err)
+		}
+
 		ctx.JSON(
 			appErr.Code,
 			NewErrorResponse(
