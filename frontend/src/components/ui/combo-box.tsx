@@ -24,15 +24,15 @@ export function Combobox({ values, placeholder, onValueChange, ...props }: Props
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
-  if (!values) {
-    return <LoadingComboBox />;
-  }
-
   useEffect(() => {
     if (onValueChange) {
       onValueChange(value);
     }
   }, [value]);
+
+  if (!values) {
+    return <LoadingComboBox />;
+  }
 
   return (
     <Popover

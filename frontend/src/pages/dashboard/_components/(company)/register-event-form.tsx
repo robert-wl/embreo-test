@@ -12,6 +12,7 @@ import { DialogClose, DialogFooter } from "@/components/ui/dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Send } from "lucide-react";
 import ErrorField from "@/components/form/error-field.tsx";
+import LoadingButton from "@/components/form/loading-button.tsx";
 
 interface Props {
   setModalOpen: (value: boolean) => void;
@@ -19,7 +20,7 @@ interface Props {
 
 export default function RegisterEventForm({ setModalOpen }: Props) {
   const { user } = useAuth();
-  const { data: eventTypes } = getAllEventTypes();
+  const { data: eventTypes, error: getError } = getAllEventTypes();
   const {
     register,
     handleSubmit,
@@ -31,7 +32,7 @@ export default function RegisterEventForm({ setModalOpen }: Props) {
       company_id: user?.company?.id,
     },
   });
-  const { mutate } = useCreateEvent({
+  const { mutate, error, isPending } = useCreateEvent({
     onSuccess: () => setModalOpen(false),
   });
 
@@ -42,7 +43,7 @@ export default function RegisterEventForm({ setModalOpen }: Props) {
           label: event.name,
           value: event.id,
         };
-      }) ?? []
+      }) ?? null
     );
   }, [eventTypes]);
 
@@ -77,6 +78,7 @@ export default function RegisterEventForm({ setModalOpen }: Props) {
             )}
           />
           <ErrorField error={errors.event_type_id?.message} />
+          <ErrorField error={getError?.message} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="proposedLocation">Proposed Location</Label>
@@ -109,6 +111,7 @@ export default function RegisterEventForm({ setModalOpen }: Props) {
             ))}
           </div>
           <ErrorField error={errors.dates?.root?.message} />
+          <ErrorField error={error?.message} />
         </div>
         <DialogFooter>
           <DialogClose asChild>
@@ -118,12 +121,14 @@ export default function RegisterEventForm({ setModalOpen }: Props) {
               Cancel
             </Button>
           </DialogClose>
-          <Button
+          <LoadingButton
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700">
+            className="bg-blue-600 hover:bg-blue-700"
+            loadingText={"Submitting..."}
+            isLoading={isPending}>
             <Send className="mr-2 h-4 w-4" />
             Submit
-          </Button>
+          </LoadingButton>
         </DialogFooter>
       </form>
     </>

@@ -9,7 +9,9 @@ interface Props extends ComponentProps<typeof Button> {
 
 export default function LoadingButton({ children, isLoading, loadingText = "Loading...", ...props }: Props) {
   return (
-    <Button {...props}>
+    <Button
+      disabled={isLoading}
+      {...props}>
       {isLoading ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {loadingText}
