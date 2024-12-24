@@ -6,7 +6,6 @@ import (
 	"github.com/robert-wl/backend/internal/domain/repository"
 	"github.com/robert-wl/backend/internal/domain/service"
 	"github.com/robert-wl/backend/pkg/utils"
-	"net/http"
 )
 
 type authService struct {
@@ -23,17 +22,15 @@ func (s *authService) LogIn(dto *dto.LogInRequest) (*string, error) {
 	user, err := s.repo.FindByUsername(dto.Username)
 
 	if err != nil {
-		return nil, utils.NewAppError(
-			fmt.Errorf("user with username %s not found", dto.Username),
-			http.StatusNotFound,
-			"user not found",
+		return nil, utils.NotFoundError(
+			err,
+			fmt.Sprintf("user with username %s not found", dto.Username),
 		)
 	}
 
 	if !utils.Compare(user.Password, dto.Password) {
-		return nil, utils.NewAppError(
-			fmt.Errorf("invalid password"),
-			http.StatusUnauthorized,
+		return nil, utils.UnauthorizedError(
+			nil,
 			"invalid password",
 		)
 	}
@@ -41,9 +38,8 @@ func (s *authService) LogIn(dto *dto.LogInRequest) (*string, error) {
 	token, err := utils.CreateJWT(user.Username, user.SecureID)
 
 	if err != nil {
-		return nil, utils.NewAppError(
-			fmt.Errorf("failed to create token"),
-			http.StatusInternalServerError,
+		return nil, utils.InternalServerError(
+			err,
 			"failed to create token",
 		)
 	}

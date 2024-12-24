@@ -45,6 +45,26 @@ func NewAppError(err error, code int, message string) *AppError {
 	}
 }
 
+func BadRequestError(err error, message string) *AppError {
+	return NewAppError(err, http.StatusBadRequest, message)
+}
+
+func InternalServerError(err error, message string) *AppError {
+	return NewAppError(err, http.StatusInternalServerError, message)
+}
+
+func NotFoundError(err error, message string) *AppError {
+	return NewAppError(err, http.StatusNotFound, message)
+}
+
+func UnauthorizedError(err error, message string) *AppError {
+	return NewAppError(err, http.StatusUnauthorized, message)
+}
+
+func ForbiddenError(err error, message string) *AppError {
+	return NewAppError(err, http.StatusForbidden, message)
+}
+
 func formatValidationErrors(validationErrors validator.ValidationErrors) []string {
 	var formattedErrors []string
 

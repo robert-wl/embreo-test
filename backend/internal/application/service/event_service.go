@@ -9,7 +9,6 @@ import (
 	"github.com/robert-wl/backend/internal/domain/service"
 	"github.com/robert-wl/backend/pkg/pagination"
 	"github.com/robert-wl/backend/pkg/utils"
-	"net/http"
 	"time"
 )
 
@@ -40,20 +39,18 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 	eventType, err := s.eventTypeRepo.FindBySecureID(dto.EventTypeID)
 
 	if err != nil {
-		return utils.NewAppError(
+		return utils.NotFoundError(
 			err,
-			http.StatusNotFound,
-			"event type not found",
+			fmt.Sprintf("event type with id %s not found", dto.EventTypeID),
 		)
 	}
 
 	company, err := s.companyRepo.FindBySecureID(dto.CompanyID)
 
 	if err != nil {
-		return utils.NewAppError(
+		return utils.NotFoundError(
 			err,
-			http.StatusNotFound,
-			"company not found",
+			fmt.Sprintf("company with id %s not found", dto.CompanyID),
 		)
 	}
 
@@ -63,17 +60,15 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 		parsedTime, err := time.Parse(time.RFC3339, date)
 
 		if err != nil {
-			return utils.NewAppError(
+			return utils.BadRequestError(
 				err,
-				http.StatusBadRequest,
 				"invalid date format",
 			)
 		}
 
 		if parsedTime.Before(time.Now()) {
-			return utils.NewAppError(
+			return utils.BadRequestError(
 				err,
-				http.StatusBadRequest,
 				"date cannot be in the past",
 			)
 		}
@@ -94,9 +89,8 @@ func (s *eventService) CreateEvent(user *model.User, dto *dto.CreateEventRequest
 	err = s.eventRepo.Create(&event)
 
 	if err != nil {
-		return utils.NewAppError(
+		return utils.InternalServerError(
 			err,
-			http.StatusInternalServerError,
 			"failed to create event",
 		)
 	}
@@ -122,9 +116,8 @@ func (s *eventService) findAllAsCompany(companyID string, dto *dto.GetEventReque
 	}
 
 	if err != nil {
-		return nil, utils.NewAppError(
+		return nil, utils.InternalServerError(
 			err,
-			http.StatusInternalServerError,
 			"failed to find events",
 		)
 	}
@@ -158,9 +151,8 @@ func (s *eventService) findAllAsVendor(vendorID string, dto *dto.GetEventRequest
 	}
 
 	if err != nil {
-		return nil, utils.NewAppError(
+		return nil, utils.InternalServerError(
 			err,
-			http.StatusInternalServerError,
 			"failed to find events",
 		)
 	}
@@ -180,7 +172,10 @@ func (s *eventService) FindAll(user *model.User, dto *dto.GetEventRequest) ([]*m
 	}
 
 	if err != nil {
-		return nil, err
+		return nil, utils.InternalServerError(
+			err,
+			"failed to find events",
+		)
 	}
 
 	return res, nil
@@ -190,18 +185,16 @@ func (s *eventService) FindBySecureId(user *model.User, secureID string) (*model
 	event, err := s.eventRepo.FindBySecureID(secureID)
 
 	if err != nil {
-		return nil, utils.NewAppError(
+		return nil, utils.NotFoundError(
 			err,
-			http.StatusInternalServerError,
-			"failed to find event",
+			"event not found",
 		)
 	}
 
 	if user.Role == model.CompanyRole && user.Company.SecureID != event.Company.SecureID {
-		return nil, utils.NewAppError(
+		return nil, utils.ForbiddenError(
 			nil,
-			http.StatusForbidden,
-			"forbidden",
+			"you are not authorized to view this event",
 		)
 	}
 
@@ -209,9 +202,8 @@ func (s *eventService) FindBySecureId(user *model.User, secureID string) (*model
 		vendors, err := s.vendorRepo.FindAllByEventType(event.EventType.SecureID)
 
 		if err != nil {
-			return nil, utils.NewAppError(
+			return nil, utils.InternalServerError(
 				err,
-				http.StatusInternalServerError,
 				"failed to find vendors",
 			)
 		}
@@ -225,10 +217,9 @@ func (s *eventService) FindBySecureId(user *model.User, secureID string) (*model
 		}
 
 		if !hasVendor {
-			return nil, utils.NewAppError(
+			return nil, utils.ForbiddenError(
 				nil,
-				http.StatusForbidden,
-				"forbidden",
+				"you are not authorized to view this event",
 			)
 		}
 	}
@@ -241,9 +232,8 @@ func (s *eventService) FindAllType(dto *dto.GetEventTypeRequest) ([]*model.Event
 		res, err := s.eventTypeRepo.FindAll()
 
 		if err != nil {
-			return nil, utils.NewAppError(
+			return nil, utils.InternalServerError(
 				err,
-				http.StatusInternalServerError,
 				"failed to find event types",
 			)
 		}
@@ -254,9 +244,8 @@ func (s *eventService) FindAllType(dto *dto.GetEventTypeRequest) ([]*model.Event
 	res, err := s.eventTypeRepo.FindAllByVendorID(*dto.VendorID)
 
 	if err != nil {
-		return nil, utils.NewAppError(
+		return nil, utils.InternalServerError(
 			err,
-			http.StatusInternalServerError,
 			"failed to find event types",
 		)
 	}
@@ -266,8 +255,12 @@ func (s *eventService) FindAllType(dto *dto.GetEventTypeRequest) ([]*model.Event
 
 func (s *eventService) validateVendorAssociation(vendorID, eventID string) error {
 	vendors, err := s.vendorRepo.FindAllByEvent(eventID)
+
 	if err != nil {
-		return utils.NewAppError(err, http.StatusInternalServerError, "failed to fetch associated vendors")
+		return utils.InternalServerError(
+			err,
+			"failed to fetch associated vendors",
+		)
 	}
 
 	for _, vendor := range vendors {
@@ -276,9 +269,8 @@ func (s *eventService) validateVendorAssociation(vendorID, eventID string) error
 		}
 	}
 
-	return utils.NewAppError(
-		fmt.Errorf("unauthorized"),
-		http.StatusForbidden,
+	return utils.ForbiddenError(
+		nil,
 		"vendor is not associated with this event",
 	)
 }
@@ -296,18 +288,16 @@ func (s *eventService) SetStatus(user *model.User, secureID string, dto *dto.Set
 	event, err := s.eventRepo.FindBySecureID(secureID)
 
 	if err != nil {
-		return utils.NewAppError(
+		return utils.NotFoundError(
 			err,
-			http.StatusNotFound,
 			"event not found",
 		)
 	}
 
 	if user.Role == model.CompanyRole {
-		return utils.NewAppError(
-			fmt.Errorf("unauthorized"),
-			http.StatusForbidden,
-			"unauthorized",
+		return utils.ForbiddenError(
+			nil,
+			"you are not authorized to set status",
 		)
 	}
 
@@ -316,9 +306,8 @@ func (s *eventService) SetStatus(user *model.User, secureID string, dto *dto.Set
 	}
 
 	if s.hasVendorResponded(event.EventResponses, user.Vendor.SecureID) {
-		return utils.NewAppError(
-			fmt.Errorf("response already set"),
-			http.StatusBadRequest,
+		return utils.BadRequestError(
+			nil,
 			"response already set",
 		)
 	}
@@ -332,9 +321,8 @@ func (s *eventService) SetStatus(user *model.User, secureID string, dto *dto.Set
 	err = s.eventResponseRepo.Create(res)
 
 	if err != nil {
-		return utils.NewAppError(
+		return utils.InternalServerError(
 			err,
-			http.StatusInternalServerError,
 			"failed to create event response",
 		)
 	}
@@ -345,9 +333,8 @@ func (s *eventService) SetStatus(user *model.User, secureID string, dto *dto.Set
 		date, err := time.Parse(time.RFC3339, *dto.ApprovedAt)
 
 		if err != nil {
-			return utils.NewAppError(
+			return utils.BadRequestError(
 				err,
-				http.StatusBadRequest,
 				"invalid date format",
 			)
 		}
@@ -357,9 +344,8 @@ func (s *eventService) SetStatus(user *model.User, secureID string, dto *dto.Set
 		err = s.eventRepo.Update(event)
 
 		if err != nil {
-			return utils.NewAppError(
+			return utils.InternalServerError(
 				err,
-				http.StatusInternalServerError,
 				"failed to update event",
 			)
 		}
