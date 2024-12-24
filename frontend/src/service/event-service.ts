@@ -98,7 +98,7 @@ export function useChangeStatus(id: string, options?: MutationParams<void, Chang
       const [_, error] = await api.post<void>(`/api/v1/events/${id}/status`, body);
 
       if (error) {
-        throw new Error("An error occurred while changing the event status");
+        throw new Error(error.message);
       }
     },
     ...options,

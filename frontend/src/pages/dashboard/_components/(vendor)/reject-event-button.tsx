@@ -26,7 +26,7 @@ export default function RejectEventButton({ event, closeModal }: Props) {
     resolver: zodResolver(changeStatusSchema),
   });
 
-  const { mutate } = useChangeStatus(event.id, {
+  const { mutate, error } = useChangeStatus(event.id, {
     onSuccess: () => {
       closeModal();
     },
@@ -64,6 +64,7 @@ export default function RejectEventButton({ event, closeModal }: Props) {
                 {...register("remarks")}
               />
               <ErrorField error={errors.remarks?.message} />
+              <ErrorField error={error?.message} />
             </div>
             <DialogFooter className="flex gap-2 pt-4 border-t border-gray-100">
               <input

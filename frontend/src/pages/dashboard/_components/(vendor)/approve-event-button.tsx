@@ -30,8 +30,7 @@ export default function ApproveEventButton({ event, closeModal }: Props) {
     },
   });
 
-  console.log(errors);
-  const { mutate } = useChangeStatus(event.id, {
+  const { mutate, error } = useChangeStatus(event.id, {
     onSuccess: () => {
       closeModal();
     },
@@ -96,6 +95,7 @@ export default function ApproveEventButton({ event, closeModal }: Props) {
                 )}
               />
               <ErrorField error={errors.approved_at?.message} />
+              <ErrorField error={error?.message} />
             </div>
             <DialogFooter className="flex gap-2 pt-4 border-t border-gray-100">
               <input
