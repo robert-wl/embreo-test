@@ -10,10 +10,15 @@ import { LoginDTO, loginSchema } from "@/lib/model/schema/auth/login.dto.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 import EventEazyIcon from "@/components/icons/event-eazy-icon.tsx";
+import ErrorField from "@/components/form/error-field.tsx";
 
 export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div">) {
-  const { user, login } = useAuth();
-  const { register, handleSubmit } = useForm<LoginDTO>({
+  const { user, login, loginError } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginDTO>({
     resolver: zodResolver(loginSchema),
   });
   const navigate = useNavigate();
@@ -23,7 +28,6 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
   };
 
   useEffect(() => {
-    console.log(user);
     if (user) {
       navigate("/");
     }
@@ -43,7 +47,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
           </div>
           <form
             onSubmit={handleSubmit(handleLogin)}
-            className="flex flex-col w-1/2 h-[20rem]">
+            className="flex flex-col w-1/2 h-[25rem]">
             <div className="flex w-full items-center justify-center gap-4">
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-black text-white">
                 <EventEazyIcon className="size-4" />
@@ -64,6 +68,7 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
                   required
                   {...register("username")}
                 />
+                <ErrorField error={errors.username?.message} />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -76,6 +81,8 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
                   required
                   {...register("password")}
                 />
+                <ErrorField error={errors.password?.message} />
+                <ErrorField error={loginError?.message} />
               </div>
               <Button
                 type="submit"

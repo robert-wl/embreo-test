@@ -28,7 +28,7 @@ export function useLogin(options?: MutationParams<LoginResponse, LoginDTO>) {
       const [data, error] = await api.post<LoginResponse>("/api/v1/auth/login", body);
 
       if (error) {
-        throw new Error("An error occurred while logging in");
+        throw new Error(error.message);
       }
 
       return data;

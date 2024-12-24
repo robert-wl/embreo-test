@@ -15,6 +15,8 @@ interface AuthContextType {
   login: (dto: LoginDTO) => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
+  loginError: Maybe<Error>;
+  getCurrentUserError: Maybe<Error>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -22,15 +24,22 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: async () => {},
   isLoading: true,
+  loginError: null,
+  getCurrentUserError: null,
 });
 
 export function AuthProvider({ children }: Props) {
   const [user, setUser] = useLocalStorage<Maybe<UserEntity>>(constant.USER_KEY, null);
   const [token, setToken] = useLocalStorage<Nullable<string>>(constant.TOKEN_KEY, null);
-  const { data, refetch, isLoading } = getCurrentUser({
+  const {
+    data,
+    refetch,
+    isLoading,
+    error: getCurrentUserError,
+  } = getCurrentUser({
     enabled: !!token,
   });
-  const { mutate } = useLogin({
+  const { mutate, error: loginError } = useLogin({
     onSuccess: (data) => {
       setToken(data.access_token);
     },
@@ -57,5 +66,5 @@ export function AuthProvider({ children }: Props) {
     }
   }, [token]);
 
-  return <AuthContext.Provider value={{ user, login, logout, isLoading }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, logout, isLoading, getCurrentUserError, loginError }}>{children}</AuthContext.Provider>;
 }
