@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import ErrorField from "@/components/form/error-field.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
+import LoadingButton from "@/components/form/loading-button.tsx";
 
 interface Props {
   event: EventEntity;
@@ -30,7 +31,7 @@ export default function ApproveEventButton({ event, closeModal }: Props) {
     },
   });
 
-  const { mutate, error } = useChangeStatus(event.id, {
+  const { mutate, error, isPending } = useChangeStatus(event.id, {
     onSuccess: () => {
       closeModal();
     },
@@ -103,13 +104,15 @@ export default function ApproveEventButton({ event, closeModal }: Props) {
                 value={EventStatus.APPROVED}
                 {...register("status")}
               />
-              <Button
+              <LoadingButton
                 onClick={() => setOpen(true)}
                 type="submit"
+                isLoading={isPending}
+                loadingText="Approving..."
                 className="w-full bg-green-600 hover:bg-green-700 text-white transition-colors">
                 <CheckCircle className="w-4 h-4 mr-2" />
                 Approve
-              </Button>
+              </LoadingButton>
             </DialogFooter>
           </form>
         </DialogContent>

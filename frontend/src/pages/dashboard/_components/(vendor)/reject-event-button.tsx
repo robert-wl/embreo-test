@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label.tsx";
 import ErrorField from "@/components/form/error-field.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import LoadingButton from "@/components/form/loading-button.tsx";
 
 interface Props {
   event: EventEntity;
@@ -26,7 +27,7 @@ export default function RejectEventButton({ event, closeModal }: Props) {
     resolver: zodResolver(changeStatusSchema),
   });
 
-  const { mutate, error } = useChangeStatus(event.id, {
+  const { mutate, error, isPending } = useChangeStatus(event.id, {
     onSuccess: () => {
       closeModal();
     },
@@ -72,13 +73,15 @@ export default function RejectEventButton({ event, closeModal }: Props) {
                 value={EventStatus.REJECTED}
                 {...register("status")}
               />
-              <Button
+              <LoadingButton
                 type="submit"
                 variant="outline"
+                isLoading={isPending}
+                loadingText="Rejecting..."
                 className="flex-1 border-red-200 hover:bg-red-50 text-red-600 hover:text-red-700 transition-colors">
                 <XCircle className="w-4 h-4 mr-2" />
                 Reject
-              </Button>
+              </LoadingButton>
             </DialogFooter>
           </form>
         </DialogContent>
