@@ -14,18 +14,20 @@ interface AuthContextType {
   user: Maybe<UserEntity>;
   login: (dto: LoginDTO) => Promise<void>;
   logout: () => Promise<void>;
+  isLoading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   login: async () => {},
   logout: async () => {},
+  isLoading: true,
 });
 
 export function AuthProvider({ children }: Props) {
   const [user, setUser] = useLocalStorage<Maybe<UserEntity>>(constant.USER_KEY, null);
   const [token, setToken] = useLocalStorage<Nullable<string>>(constant.TOKEN_KEY, null);
-  const { data, refetch } = getCurrentUser({
+  const { data, refetch, isLoading } = getCurrentUser({
     enabled: !!token,
   });
   const { mutate } = useLogin({
@@ -55,5 +57,5 @@ export function AuthProvider({ children }: Props) {
     }
   }, [token]);
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, logout, isLoading }}>{children}</AuthContext.Provider>;
 }
