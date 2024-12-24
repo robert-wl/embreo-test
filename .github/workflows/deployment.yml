@@ -1,0 +1,31 @@
+name: Build docker and deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        env:
+          DOCKER_HOST: ssh://${{ secrets.USERNAME }}@${{ secrets.HOST }}
+          DOCKER_CLI_EXPERIMENTAL: enabled
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd embreo-test
+            git pull
+            docker compose --env-file .env.docker -f docker-compose.server.yml up --build -d
+            docker compose  --env-file .env.docker-f docker-compose.server.yml down
+            docker image prune -f
