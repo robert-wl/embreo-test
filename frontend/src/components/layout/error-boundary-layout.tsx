@@ -1,6 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from "react";
-import NotFoundPage from "@/pages/not-found.tsx";
 import { Outlet } from "react-router";
+import ErrorPage from "@/pages/error-page.tsx";
 
 interface Props {
   children?: ReactNode;
@@ -27,7 +27,7 @@ export default class ErrorBoundaryLayout extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return <NotFoundPage />;
+      return <ErrorPage error={this.state.error} />;
     }
 
     return <Outlet />;

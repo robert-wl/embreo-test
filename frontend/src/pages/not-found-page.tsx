@@ -20,7 +20,7 @@ export default function NotFoundPage() {
           width="200"
           height="200"
           viewBox="0 0 200 200"
-          className="animate-float">
+          className="animate-pulse">
           <circle
             cx="100"
             cy="100"

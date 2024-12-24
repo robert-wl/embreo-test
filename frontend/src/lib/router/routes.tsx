@@ -2,7 +2,7 @@ import { RouteObject } from "react-router";
 import LoginPage from "@/pages/auth/login-page.tsx";
 import AppLayout from "@/components/layout/app-layout.tsx";
 import DashboardPage from "@/pages/dashboard/dashboard-page.tsx";
-import NotFoundPage from "@/pages/not-found.tsx";
+import NotFoundPage from "@/pages/not-found-page.tsx";
 import ErrorBoundaryLayout from "@/components/layout/error-boundary-layout.tsx";
 import AuthMiddleware from "@/components/middleware/auth-middleware.tsx";
 
