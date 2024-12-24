@@ -27,6 +27,7 @@ const docTemplate = `{
                 "tags": [
                     "authentication"
                 ],
+                "summary": "Log in a user",
                 "parameters": [
                     {
                         "description": "User credentials",
@@ -71,6 +72,7 @@ const docTemplate = `{
                 "tags": [
                     "authentication"
                 ],
+                "summary": "Get current user",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -104,6 +106,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "Find all event types",
                 "parameters": [
                     {
                         "type": "string",
@@ -148,6 +151,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "Find all events",
                 "parameters": [
                     {
                         "type": "integer",
@@ -202,6 +206,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "Create an event",
                 "parameters": [
                     {
                         "description": "Event",
@@ -243,6 +248,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "Find event by secure id",
                 "parameters": [
                     {
                         "type": "string",
@@ -285,6 +291,7 @@ const docTemplate = `{
                 "tags": [
                     "event"
                 ],
+                "summary": "Set event status",
                 "parameters": [
                     {
                         "type": "string",
@@ -421,6 +428,9 @@ const docTemplate = `{
                 "status"
             ],
             "properties": {
+                "approved_at": {
+                    "type": "string"
+                },
                 "remarks": {
                     "type": "string"
                 },
@@ -455,7 +465,7 @@ const docTemplate = `{
         "model.Event": {
             "type": "object",
             "properties": {
-                "accepted_at": {
+                "approved_at": {
                     "type": "string"
                 },
                 "approved_vendor": {

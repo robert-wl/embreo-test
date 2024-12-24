@@ -19,7 +19,8 @@ func NewAuthHandler(authService service.AuthService) *AuthHandler {
 	}
 }
 
-// LogIn @Summary Log in a user
+// LogIn Log in a user
+// @Summary Log in a user
 // @Description Authenticate a user with their credentials and return an access token
 // @Tags authentication
 // @Accept json
@@ -48,7 +49,8 @@ func (h *AuthHandler) LogIn(ctx *gin.Context) {
 	})
 }
 
-// Me @Summary Get current user
+// Me Get current user
+// @Summary Get current user
 // @Description Get the current user
 // @Tags authentication
 // @Accept json

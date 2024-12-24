@@ -37,6 +37,8 @@ definitions:
     type: object
   dto.SetStatusRequest:
     properties:
+      approved_at:
+        type: string
       remarks:
         type: string
       status:
@@ -61,7 +63,7 @@ definitions:
     type: object
   model.Event:
     properties:
-      accepted_at:
+      approved_at:
         type: string
       approved_vendor:
         $ref: '#/definitions/model.Vendor'
@@ -231,6 +233,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/utils.ErrorResponse'
+      summary: Log in a user
       tags:
       - authentication
   /auth/me:
@@ -251,6 +254,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       security:
       - BearerAuth: []
+      summary: Get current user
       tags:
       - authentication
   /event/types:
@@ -278,6 +282,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       security:
       - BearerAuth: []
+      summary: Find all event types
       tags:
       - event
   /events:
@@ -313,6 +318,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       security:
       - BearerAuth: []
+      summary: Find all events
       tags:
       - event
     post:
@@ -337,6 +343,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       security:
       - BearerAuth: []
+      summary: Create an event
       tags:
       - event
   /events/{id}:
@@ -363,6 +370,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       security:
       - BearerAuth: []
+      summary: Find event by secure id
       tags:
       - event
   /events/{id}/status:
@@ -393,6 +401,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       security:
       - BearerAuth: []
+      summary: Set event status
       tags:
       - event
   /events/{id}/vendors:

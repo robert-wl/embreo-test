@@ -19,7 +19,8 @@ func NewEventHandler(es service.EventService) *EventHandler {
 	}
 }
 
-// CreateEvent @Summary Create an event
+// CreateEvent Create an event
+// @Summary Create an event
 // @Description Create an event
 // @Tags event
 // @Accept json
@@ -49,7 +50,8 @@ func (h *EventHandler) CreateEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, nil)
 }
 
-// SetStatus @Summary Set event status
+// SetStatus Set event status
+// @Summary Set event status
 // @Description Set event status
 // @Tags event
 // @Accept json
@@ -82,7 +84,8 @@ func (h *EventHandler) SetStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, nil)
 }
 
-// FindAll @Summary Find all events
+// FindAll Find all events
+// @Summary Find all events
 // @Description Find all events
 // @Tags event
 // @Accept json
@@ -114,7 +117,8 @@ func (h *EventHandler) FindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-// FindBySecureID @Summary Find event by secure id
+// FindBySecureID Find event by secure id
+// @Summary Find event by secure id
 // @Description Find event by secure id
 // @Tags event
 // @Accept json
@@ -139,7 +143,8 @@ func (h *EventHandler) FindBySecureID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-// FindAllType @Summary Find all event types
+// FindAllType Find all event types
+// @Summary Find all event types
 // @Description Find all event types
 // @Tags event
 // @Accept json
