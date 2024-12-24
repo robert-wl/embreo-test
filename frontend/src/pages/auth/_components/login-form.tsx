@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { LoginDTO, loginSchema } from "@/lib/model/schema/auth/login.dto.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
+import EventEazyIcon from "@/components/icons/event-eazy-icon.tsx";
 
 export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div">) {
   const { user, login } = useAuth();
@@ -43,7 +44,12 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
           <form
             onSubmit={handleSubmit(handleLogin)}
             className="flex flex-col w-1/2 h-[20rem]">
-            <h2 className="text-2xl w-full text-center font-bold">EventEazy</h2>
+            <div className="flex w-full items-center justify-center gap-4">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-black text-white">
+                <EventEazyIcon className="size-4" />
+              </div>
+              <h2 className="text-2xl text-center font-bold">EventEazy</h2>
+            </div>
             <div className="flex flex-col justify-center gap-6 h-full">
               <div className="grid gap-2">
                 <Label
