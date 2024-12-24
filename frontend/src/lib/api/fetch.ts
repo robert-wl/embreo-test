@@ -41,11 +41,18 @@ function handleError(error: any) {
   };
 }
 
+function validateResponse<T>(response: unknown): T {
+  if (response instanceof Object) {
+    return response as T;
+  }
+
+  throw new Error("Invalid response");
+}
 async function get<T>(url: string): BackendResponse<T> {
   try {
     const { data } = await axiosInstance.get<T>(url);
 
-    return [data, null];
+    return [validateResponse(data)!, null];
   } catch (error) {
     return [null, handleError(error)];
   }
@@ -55,7 +62,7 @@ async function post<T>(url: string, body: Object): BackendResponse<T> {
   try {
     const { data } = await axiosInstance.post<T>(url, body);
 
-    return [data, null];
+    return [validateResponse(data)!, null];
   } catch (error) {
     return [null, handleError(error)];
   }
@@ -65,7 +72,7 @@ async function put<T>(url: string): BackendResponse<T> {
   try {
     const { data } = await axiosInstance.put<T>(url);
 
-    return [data, null];
+    return [validateResponse(data)!, null];
   } catch (error) {
     return [null, handleError(error)];
   }
@@ -75,7 +82,7 @@ async function remove<T>(url: string): BackendResponse<T> {
   try {
     const { data } = await axiosInstance.delete<T>(url);
 
-    return [data, null];
+    return [validateResponse(data)!, null];
   } catch (error) {
     return [null, handleError(error)];
   }
