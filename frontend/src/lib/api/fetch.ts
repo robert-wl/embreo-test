@@ -42,6 +42,9 @@ function handleError(error: any) {
 }
 
 function validateResponse<T>(response: unknown): T {
+  if (response === undefined) {
+    return {} as T;
+  }
   if (response instanceof Object) {
     return response as T;
   }
