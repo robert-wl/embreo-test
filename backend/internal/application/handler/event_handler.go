@@ -47,7 +47,7 @@ func (h *EventHandler) CreateEvent(ctx *gin.Context) {
 		return
 	}
 
-    ctx.StatusCreated()
+	ctx.Status(http.StatusCreated)
 }
 
 // SetStatus Set event status
@@ -81,7 +81,7 @@ func (h *EventHandler) SetStatus(ctx *gin.Context) {
 		return
 	}
 
-    ctx.StatusOK()
+	ctx.Status(http.StatusOK)
 }
 
 // FindAll Find all events
