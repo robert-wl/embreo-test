@@ -5,9 +5,7 @@ A full-stack web application facilitating online event booking and vendor manage
 ## Deployment Demo
 
 - **Frontend**: [https://embreo.robertwl.my.id](https://embreo.robertwl.my.id)
-- **Backend**: [https://embreo-be.robertwl.my.id](https://embreo-be.robertwl.my.id)
-
-- **Swagger**: [https://embreo-be.robertwl.my.id/swagger/index.html](https://embreo-be.robertwl.my.id/swagger/index.html)
+- **Backend**: [https://embreo-be.robertwl.my.id/swagger/index.html](https://embreo-be.robertwl.my.id/swagger/index.html)
 
 Dummy credentials:
 - **HR Admin**: 
