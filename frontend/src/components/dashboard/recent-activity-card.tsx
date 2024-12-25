@@ -30,7 +30,7 @@ export default function RecentActivityCard({ data, ...props }: Props) {
           e.event_responses?.map<Activity>((r) => {
             let descriptionText = "";
 
-            switch (e.status) {
+            switch (r.status) {
               case EventStatus.APPROVED:
                 descriptionText = `Request approved by vendor ${e.approved_vendor?.name}`;
                 break;
@@ -42,7 +42,7 @@ export default function RecentActivityCard({ data, ...props }: Props) {
             return {
               title: "New Response",
               description: descriptionText,
-              status: e.status,
+              status: r.status,
               time: timeAgo(r.created_at),
               name: r.vendor?.name ?? "",
             };
