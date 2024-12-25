@@ -222,10 +222,6 @@ func (s *seeder) SeedUser() error {
 }
 
 func (s *seeder) seedDemoUser() error {
-	if count, err := s.checkModelCount(&model.User{}); count > 0 || err != nil {
-		return err
-	}
-
 	var companies []model.Company
 	if err := s.db.Find(&companies).Error; err != nil {
 		return err
