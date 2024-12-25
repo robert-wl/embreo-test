@@ -25,7 +25,6 @@ export default function RecentActivityCard({ data, ...props }: Props) {
   const getRecentActivitiesCompany = () => {
     return data
       .flatMap((e) => {
-        console.log(e.event_responses);
         return (
           e.event_responses?.map<Activity>((r) => {
             let descriptionText = "";
