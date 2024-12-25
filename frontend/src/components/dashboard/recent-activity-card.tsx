@@ -25,6 +25,7 @@ export default function RecentActivityCard({ data, ...props }: Props) {
   const getRecentActivitiesCompany = () => {
     return data
       .flatMap((e) => {
+        console.log(e.event_responses);
         return (
           e.event_responses?.map<Activity>((r) => {
             let descriptionText = "";
@@ -34,7 +35,7 @@ export default function RecentActivityCard({ data, ...props }: Props) {
                 descriptionText = `Request approved by vendor ${e.approved_vendor?.name}`;
                 break;
               case EventStatus.REJECTED:
-                descriptionText = `Request rejected by vendor ${r.vendor?.name}`;
+                descriptionText = `Request rejected by vendor ${r.vendor?.name} with reason: ${r.remarks}`;
                 break;
             }
 
@@ -48,7 +49,7 @@ export default function RecentActivityCard({ data, ...props }: Props) {
           }) ?? []
         );
       })
-      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+      .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
       .slice(0, 8);
   };
 
@@ -65,7 +66,7 @@ export default function RecentActivityCard({ data, ...props }: Props) {
           vendorName: e.company?.name ?? "",
         };
       })
-      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+      .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
       .slice(0, 8);
   };
 
