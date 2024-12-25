@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/robert-wl/backend/config"
 	"github.com/robert-wl/backend/docs"
 	"github.com/robert-wl/backend/internal/application/handler"
 	service2 "github.com/robert-wl/backend/internal/application/service"
@@ -33,8 +34,9 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 
 	docs.SwaggerInfo.Title = "Embreo Backend API"
 
+	frontendUrl := config.Get().FrontendURL
 	corsConfig := cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:5173"},
+		AllowOrigins: []string{frontendUrl},
 		AllowMethods: []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
 		AllowHeaders: []string{"Content-Type, access-control-allow-origin, access-control-allow-headers, Authorization"},
 	})
