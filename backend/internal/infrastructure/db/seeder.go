@@ -179,11 +179,16 @@ func (s *seeder) SeedUser() error {
 		return nil
 	}
 
-	count := rand.Intn(10) + 5
+	count := rand.Intn(10) + 5 + 2
 	roles := []model.Role{model.CompanyRole, model.VendorRole}
 
 	for i := 0; i < count; i++ {
 		username := strings.ReplaceAll(faker.Name(), " ", "-")
+		if i == 0 {
+			username = "company"
+		} else if i == 1 {
+			username = "vendor"
+		}
 		password, err := utils.Encrypt(username)
 		if err != nil {
 			return err
