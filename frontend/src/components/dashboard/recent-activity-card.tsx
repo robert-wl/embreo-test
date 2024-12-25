@@ -86,7 +86,7 @@ export default function RecentActivityCard({ data, ...props }: Props) {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
-          <p className="text-sm text-gray-500 mt-1">Track your team's latest updates</p>
+          <p className="text-sm text-gray-500 mt-1">Track the latest event updates</p>
         </div>
       </CardHeader>
       <CardContent>
