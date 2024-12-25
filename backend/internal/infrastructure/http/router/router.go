@@ -33,7 +33,7 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	vendorHandler := handler.NewVendorHandler(vendorService)
 
 	docs.SwaggerInfo.Title = "Embreo Backend API"
-	docs.SwaggerInfo.Host = config.Get().SelfURL
+	docs.SwaggerInfo.Host = config.Get().SelfHost
 
 	frontendUrl := config.Get().FrontendURL
 	corsConfig := cors.New(cors.Config{
