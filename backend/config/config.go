@@ -15,6 +15,7 @@ type Config struct {
 	PostgresDB       string
 
 	FrontendURL string
+	SelfURL     string
 
 	JWTKey string
 }
@@ -41,6 +42,7 @@ func Get() *Config {
 		PostgresDB:       getEnv("POSTGRES_DB"),
 
 		FrontendURL: getEnv("FRONTEND_URL"),
+		SelfURL:     getEnv("SELF_URL"),
 
 		JWTKey: getEnv("JWT_KEY"),
 	}
