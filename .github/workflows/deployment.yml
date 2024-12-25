@@ -26,6 +26,6 @@ jobs:
           script: |
             cd embreo-test
             git pull
-            docker compose --env-file .env.docker -f docker-compose.server.yml up --build -d
             docker compose --env-file .env.docker -f docker-compose.server.yml down
+            docker compose --env-file .env.docker -f docker-compose.server.yml up --build -d
             docker image prune -f
