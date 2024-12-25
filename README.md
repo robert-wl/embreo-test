@@ -9,6 +9,14 @@ A full-stack web application facilitating online event booking and vendor manage
 
 - **Swagger**: [https://embreo-be.robertwl.my.id/swagger/index.html](https://embreo-be.robertwl.my.id/swagger/index.html)
 
+Dummy credentials:
+- **HR Admin**: 
+    - Username: `company`
+    - Password: `company`
+- **Vendor Admin**:
+    - Username: `vendor`
+    - Password: `vendor`
+
 ## Features
 
 - **User Authentication**
@@ -154,3 +162,17 @@ API documentation is available via Swagger UI at `/swagger/index.html` when runn
 ### ERD Diagram
 
 ![ERD Diagram](./.github/images/database.png)
+
+## Application Demo
+
+### Login Page
+
+![Login Page](./.github/images/login.png)
+
+### HR Admin Dashboard
+
+![HR Admin Dashboard](./.github/images/company-dashboard.png)
+
+### Vendor Admin Dashboard
+
+![Vendor Admin Dashboard](./.github/images/vendor-dashboard.png)
