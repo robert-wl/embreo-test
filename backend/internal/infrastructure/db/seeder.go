@@ -179,14 +179,74 @@ func (s *seeder) SeedUser() error {
 		return nil
 	}
 
-	count := rand.Intn(10) + 5 + 2
+	count := rand.Intn(10) + 5
 	roles := []model.Role{model.CompanyRole, model.VendorRole}
 
 	for i := 0; i < count; i++ {
 		username := strings.ReplaceAll(faker.Name(), " ", "-")
+		password, err := utils.Encrypt(username)
+		if err != nil {
+			return err
+		}
+
+		role := roles[rand.Intn(len(roles))]
+
+		var selectedCompany *model.Company
+		var selectedVendor *model.Vendor
+		if role == model.CompanyRole && len(companies) > 0 {
+			randomIndex := rand.Intn(len(companies))
+			selectedCompany = &companies[randomIndex]
+		} else if role == model.VendorRole && len(vendors) > 0 {
+			randomIndex := rand.Intn(len(vendors))
+			selectedVendor = &vendors[randomIndex]
+		}
+
+		user := model.User{
+			Username: username,
+			Password: password,
+			Role:     role,
+			Company:  selectedCompany,
+			Vendor:   selectedVendor,
+		}
+
+		if err := s.db.Create(&user).Error; err != nil {
+			return err
+		}
+	}
+
+	if err := s.seedDemoUser(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *seeder) seedDemoUser() error {
+	if count, err := s.checkModelCount(&model.User{}); count > 0 || err != nil {
+		return err
+	}
+
+	var companies []model.Company
+	if err := s.db.Find(&companies).Error; err != nil {
+		return err
+	}
+
+	var vendors []model.Vendor
+	if err := s.db.Find(&vendors).Error; err != nil {
+		return err
+	}
+
+	if len(companies) == 0 && len(vendors) == 0 {
+		return nil
+	}
+
+	roles := []model.Role{model.CompanyRole, model.VendorRole}
+
+	for i := 0; i < 2; i++ {
+		var username string
 		if i == 0 {
 			username = "company"
-		} else if i == 1 {
+		} else {
 			username = "vendor"
 		}
 		password, err := utils.Encrypt(username)
@@ -194,7 +254,7 @@ func (s *seeder) SeedUser() error {
 			return err
 		}
 
-		role := roles[rand.Intn(len(roles))]
+		role := roles[i]
 
 		var selectedCompany *model.Company
 		var selectedVendor *model.Vendor
