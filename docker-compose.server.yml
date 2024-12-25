@@ -13,6 +13,7 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
+      SELF_URL: ${SELF_URL}
       FRONTEND_URL: ${FRONTEND_URL}
       JWT_KEY: ${JWT_KEY}
     restart: unless-stopped
